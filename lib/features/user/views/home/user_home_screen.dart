@@ -10,7 +10,7 @@ import 'package:app_jobfind/features/chat/views/chat_list_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 /// Màn hình Trang chủ Người Dùng (User Home Screen)
-/// Đây là màn hình chứa thanh điều hướng `BottomNavigationBar`. Nó điều hướng 
+/// Đây là màn hình chứa thanh điều hướng `BottomNavigationBar`. Nó điều hướng
 /// thành phần hiển thị `body` giữa thẻ Home, thẻ Cộng Đồng, và thẻ Profile (`MainProfileScreen`).
 class UserHomeScreen extends ConsumerStatefulWidget {
   const UserHomeScreen({super.key});
@@ -50,7 +50,10 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const MyCvScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const MyCvScreen()),
+          );
         },
         backgroundColor: const Color(0xFF14003E), // Deep Navy
         elevation: 4,
@@ -86,7 +89,9 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
         SliverToBoxAdapter(child: _buildFilterBar()),
         if (jobsState.isLoading)
           const SliverFillRemaining(
-            child: Center(child: CircularProgressIndicator(color: Color(0xFF14003E))),
+            child: Center(
+              child: CircularProgressIndicator(color: Color(0xFF14003E)),
+            ),
           )
         else if (jobsState.error != null)
           SliverFillRemaining(
@@ -94,55 +99,62 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
           )
         else if (jobsState.jobs.isEmpty)
           const SliverFillRemaining(
-            child: Center(child: Text("No job posts available.", style: TextStyle(color: Colors.grey))),
+            child: Center(
+              child: Text(
+                "No job posts available.",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
           )
         else
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
             sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  if (index == jobsState.jobs.length) {
-                    return const SizedBox(height: 80); // spacing for bottom nav
-                  }
-                  final job = jobsState.jobs[index];
-                  final timeAgo = timeago.format(job.createdAt, locale: 'en');
-                  final savedJobs = ref.watch(savedJobsProvider);
-                  final isSaved = savedJobs.any((j) => j.id == job.id);
+              delegate: SliverChildBuilderDelegate((context, index) {
+                if (index == jobsState.jobs.length) {
+                  return const SizedBox(height: 80); // spacing for bottom nav
+                }
+                final job = jobsState.jobs[index];
+                final timeAgo = timeago.format(job.createdAt, locale: 'en');
+                final savedJobs = ref.watch(savedJobsProvider);
+                final isSaved = savedJobs.any((j) => j.id == job.id);
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => JobDetailsScreen(job: job)),
-                        );
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => JobDetailsScreen(job: job),
+                        ),
+                      );
+                    },
+                    child: JobCard(
+                      logoUrl: job.companyLogoUrl ?? '',
+                      title: job.title,
+                      company: job.companyName,
+                      location: job.location ?? 'Remote',
+                      tags: job.requiredSkills.isNotEmpty
+                          ? job.requiredSkills.take(3).toList()
+                          : ['Full-time'],
+                      timeAgo: timeAgo,
+                      salary: job.salaryMax != null
+                          ? '\$${(job.salaryMax! / 1000).toStringAsFixed(0)}K'
+                          : 'Negotiable',
+                      isSaved: isSaved,
+                      onToggleSave: () {
+                        ref.read(savedJobsProvider.notifier).toggleSave(job);
                       },
-                      child: JobCard(
-                        logoUrl: job.companyLogoUrl ?? '',
-                        title: job.title,
-                        company: job.companyName,
-                        location: job.location ?? 'Remote',
-                        tags: job.requiredSkills.isNotEmpty ? job.requiredSkills.take(3).toList() : ['Full-time'],
-                        timeAgo: timeAgo,
-                        salary: job.salaryMax != null ? '\$${(job.salaryMax! / 1000).toStringAsFixed(0)}K' : 'Negotiable',
-                        isSaved: isSaved,
-                        onToggleSave: () {
-                          ref.read(savedJobsProvider.notifier).toggleSave(job);
-                        },
-                      ),
                     ),
-                  );
-                },
-                childCount: jobsState.jobs.length + 1,
-              ),
+                  ),
+                );
+              }, childCount: jobsState.jobs.length + 1),
             ),
           ),
       ],
     );
   }
-
 
   Widget _buildNavItem(IconData icon, int index) {
     final isActive = _currentIndex == index;
@@ -226,7 +238,6 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -285,5 +296,4 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
       ),
     );
   }
-
 }

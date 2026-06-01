@@ -7,7 +7,8 @@ import 'package:app_jobfind/features/jobpost/models/create_job_post_request.dart
 
 class JobPostService {
   final ApiClient _apiClient;
-  JobPostService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  JobPostService({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient();
 
   /// Lấy danh sách tin tuyển dụng của Employer đang đăng nhập
   Future<List<JobPostModel>> getMyJobPosts() async {
@@ -22,7 +23,10 @@ class JobPostService {
   }
 
   /// Lấy tất cả tin công khai (dùng cho Student)
-  Future<List<JobPostModel>> getAllPublic({int page = 1, int pageSize = 20}) async {
+  Future<List<JobPostModel>> getAllPublic({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final data = await _apiClient.get(
       '/jobposts',
       queryParameters: {'pageNumber': page, 'pageSize': pageSize},
@@ -39,7 +43,10 @@ class JobPostService {
   }
 
   /// Cập nhật tin tuyển dụng
-  Future<JobPostModel> updateJobPost(int id, CreateJobPostRequest request) async {
+  Future<JobPostModel> updateJobPost(
+    int id,
+    CreateJobPostRequest request,
+  ) async {
     final data = await _apiClient.put('/jobposts/$id', data: request.toJson());
     return JobPostModel.fromJson(data);
   }

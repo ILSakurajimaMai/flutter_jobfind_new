@@ -47,14 +47,15 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     final text = _messageController.text.trim();
     if (text.isEmpty) return;
 
-    ref.read(chatRoomProvider(widget.conversationId).notifier).sendMessage(
-          text,
-          widget.recipientId,
-        );
+    ref
+        .read(chatRoomProvider(widget.conversationId).notifier)
+        .sendMessage(text, widget.recipientId);
     _messageController.clear();
     _isTyping = false;
     _typingTimer?.cancel();
-    ref.read(chatRoomProvider(widget.conversationId).notifier).sendTypingStatus(false);
+    ref
+        .read(chatRoomProvider(widget.conversationId).notifier)
+        .sendTypingStatus(false);
   }
 
   @override
@@ -70,7 +71,12 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     final chatState = ref.watch(chatRoomProvider(widget.conversationId));
 
     final initials = widget.recipientName.isNotEmpty
-        ? widget.recipientName.trim().split(' ').last.substring(0, 1).toUpperCase()
+        ? widget.recipientName
+              .trim()
+              .split(' ')
+              .last
+              .substring(0, 1)
+              .toUpperCase()
         : 'U';
 
     return Scaffold(
@@ -86,7 +92,11 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
               backgroundColor: Colors.white.withValues(alpha: 0.15),
               child: Text(
                 initials,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
             const SizedBox(width: 10),
@@ -96,13 +106,20 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 children: [
                   Text(
                     widget.recipientName,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
-                    chatState.isConnected ? 'Đang trực tuyến' : 'Đang kết nối...',
+                    chatState.isConnected
+                        ? 'Đang trực tuyến'
+                        : 'Đang kết nối...',
                     style: TextStyle(
                       fontSize: 11,
-                      color: chatState.isConnected ? const Color(0xFF0D9D58) : Colors.amber,
+                      color: chatState.isConnected
+                          ? const Color(0xFF0D9D58)
+                          : Colors.amber,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -137,7 +154,9 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
           // Danh sách tin nhắn
           Expanded(
             child: chatState.isLoading
-                ? const Center(child: CircularProgressIndicator(color: Color(0xFF14003E)))
+                ? const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF14003E)),
+                  )
                 : ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(16),
@@ -154,13 +173,19 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
           // Hiển thị Typing Indicator
           if (chatState.isPeerTyping)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 8.0,
+              ),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -169,7 +194,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                             color: Colors.black.withValues(alpha: 0.02),
                             blurRadius: 2,
                             offset: const Offset(0, 1),
-                          )
+                          ),
                         ],
                       ),
                       child: Row(
@@ -177,10 +202,16 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                           SizedBox(
                             width: 12,
                             height: 12,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.grey),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.grey,
+                            ),
                           ),
                           SizedBox(width: 8),
-                          Text('Đang soạn tin nhắn...', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                          Text(
+                            'Đang soạn tin nhắn...',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
                         ],
                       ),
                     ),
@@ -224,7 +255,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
               color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 4,
               offset: const Offset(0, 2),
-            )
+            ),
           ],
         ),
         child: Column(
@@ -247,7 +278,9 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                   Icon(
                     Icons.done_all,
                     size: 11,
-                    color: msg.isRead ? const Color(0xFF0D9D58) : Colors.white30,
+                    color: msg.isRead
+                        ? const Color(0xFF0D9D58)
+                        : Colors.white30,
                   ),
                 ],
               ],
@@ -269,7 +302,11 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, -2),
+          ),
         ],
       ),
       child: Row(
@@ -289,7 +326,10 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 decoration: const InputDecoration(
                   hintText: 'Nhập nội dung trao đổi...',
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                 ),
               ),
             ),

@@ -7,7 +7,8 @@ class ChangePasswordScreen extends ConsumerStatefulWidget {
   const ChangePasswordScreen({super.key});
 
   @override
-  ConsumerState<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+  ConsumerState<ChangePasswordScreen> createState() =>
+      _ChangePasswordScreenState();
 }
 
 class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
@@ -44,13 +45,19 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
     if (mounted) {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đổi mật khẩu thành công!'), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text('Đổi mật khẩu thành công!'),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.pop(context); // Quay về Profile
       } else {
         final error = ref.read(authProvider).error;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error ?? 'Có lỗi xảy ra'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(error ?? 'Có lỗi xảy ra'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -80,15 +87,18 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 style: TextStyle(color: Colors.grey, fontSize: 14),
               ),
               const SizedBox(height: 32),
-              
+
               // Mật khẩu hiện tại
               _buildPasswordField(
                 controller: _currentPasswordController,
                 label: 'Mật khẩu hiện tại',
                 obscureText: _obscureCurrent,
-                onToggleObscure: () => setState(() => _obscureCurrent = !_obscureCurrent),
+                onToggleObscure: () =>
+                    setState(() => _obscureCurrent = !_obscureCurrent),
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'Vui lòng nhập mật khẩu hiện tại';
+                  if (val == null || val.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu hiện tại';
+                  }
                   return null;
                 },
               ),
@@ -99,10 +109,15 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 controller: _newPasswordController,
                 label: 'Mật khẩu mới',
                 obscureText: _obscureNew,
-                onToggleObscure: () => setState(() => _obscureNew = !_obscureNew),
+                onToggleObscure: () =>
+                    setState(() => _obscureNew = !_obscureNew),
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'Vui lòng nhập mật khẩu mới';
-                  if (val.length < 6) return 'Mật khẩu mới phải có ít nhất 6 ký tự';
+                  if (val == null || val.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu mới';
+                  }
+                  if (val.length < 6) {
+                    return 'Mật khẩu mới phải có ít nhất 6 ký tự';
+                  }
                   return null;
                 },
               ),
@@ -113,10 +128,15 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 controller: _confirmPasswordController,
                 label: 'Xác nhận mật khẩu mới',
                 obscureText: _obscureConfirm,
-                onToggleObscure: () => setState(() => _obscureConfirm = !_obscureConfirm),
+                onToggleObscure: () =>
+                    setState(() => _obscureConfirm = !_obscureConfirm),
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'Vui lòng xác nhận mật khẩu mới';
-                  if (val != _newPasswordController.text) return 'Mật khẩu xác nhận không khớp';
+                  if (val == null || val.isEmpty) {
+                    return 'Vui lòng xác nhận mật khẩu mới';
+                  }
+                  if (val != _newPasswordController.text) {
+                    return 'Mật khẩu xác nhận không khớp';
+                  }
                   return null;
                 },
               ),
@@ -128,17 +148,26 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF14003E),
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: authState.isLoading
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
                       )
                     : const Text(
                         'Cập nhật mật khẩu',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
               ),
             ],
@@ -177,7 +206,9 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
         ),
         suffixIcon: IconButton(
           icon: Icon(
-            obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            obscureText
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
             color: Colors.grey,
           ),
           onPressed: onToggleObscure,

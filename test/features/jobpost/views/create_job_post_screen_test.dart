@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 void main() {
   Widget createWidgetUnderTest() {
     return const ProviderScope(
-      child: MaterialApp(
-        home: Scaffold(body: Text('Create Job Post')), 
-      ),
+      child: MaterialApp(home: Scaffold(body: Text('Create Job Post'))),
     );
   }
 

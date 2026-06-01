@@ -3,19 +3,19 @@ class ApiResponse<T> {
   final String message;
   final T? data;
 
-  ApiResponse({
-    required this.success,
-    this.message = '',
-    this.data,
-  });
+  ApiResponse({required this.success, this.message = '', this.data});
 
-  factory ApiResponse.fromJson(Map<String, dynamic> json, {T Function(dynamic)? fromJsonT}) {
+  factory ApiResponse.fromJson(
+    Map<String, dynamic> json, {
+    T Function(dynamic)? fromJsonT,
+  }) {
     return ApiResponse<T>(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
       data: (json['data'] != null && fromJsonT != null)
           ? fromJsonT(json['data'])
-          : json['data'] as T?, // fallback if parser isn't provided but it is matched by type
+          : json['data']
+                as T?, // fallback if parser isn't provided but it is matched by type
     );
   }
 }

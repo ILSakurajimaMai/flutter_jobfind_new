@@ -14,10 +14,12 @@ class EmployerApplicationDetailScreen extends ConsumerStatefulWidget {
   const EmployerApplicationDetailScreen({super.key, required this.application});
 
   @override
-  ConsumerState<EmployerApplicationDetailScreen> createState() => _EmployerApplicationDetailScreenState();
+  ConsumerState<EmployerApplicationDetailScreen> createState() =>
+      _EmployerApplicationDetailScreenState();
 }
 
-class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplicationDetailScreen> {
+class _EmployerApplicationDetailScreenState
+    extends ConsumerState<EmployerApplicationDetailScreen> {
   late Future<CvDto> _cvFuture;
   bool _isActioning = false;
 
@@ -30,29 +32,45 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
 
   String _getStatusLabel(String statusName) {
     switch (statusName) {
-      case 'Pending':      return 'Chờ xét duyệt';
-      case 'Reviewing':    return 'Đang xem xét';
-      case 'Shortlisted':  return 'Đã lọc hồ sơ';
-      case 'Interviewing': return 'Đang phỏng vấn';
-      case 'Offered':      return 'Đã được offer';
-      case 'Accepted':     return 'Đã chấp nhận';
-      case 'Rejected':     return 'Bị từ chối';
-      case 'Withdrawn':    return 'Đã rút đơn';
-      case 'Expired':      return 'Hết hạn';
-      default:             return statusName;
+      case 'Pending':
+        return 'Chờ xét duyệt';
+      case 'Reviewing':
+        return 'Đang xem xét';
+      case 'Shortlisted':
+        return 'Đã lọc hồ sơ';
+      case 'Interviewing':
+        return 'Đang phỏng vấn';
+      case 'Offered':
+        return 'Đã được offer';
+      case 'Accepted':
+        return 'Đã chấp nhận';
+      case 'Rejected':
+        return 'Bị từ chối';
+      case 'Withdrawn':
+        return 'Đã rút đơn';
+      case 'Expired':
+        return 'Hết hạn';
+      default:
+        return statusName;
     }
   }
 
   Color _getStatusColor(int statusId) {
     switch (statusId) {
-      case 1: return Colors.orange; // Pending
-      case 2: return Colors.blue; // Reviewing
+      case 1:
+        return Colors.orange; // Pending
+      case 2:
+        return Colors.blue; // Reviewing
       case 3:
-      case 4: return Colors.purple; // Shortlisted / Interviewing
+      case 4:
+        return Colors.purple; // Shortlisted / Interviewing
       case 5:
-      case 6: return Colors.green; // Offered / Accepted
-      case 7: return Colors.red; // Rejected
-      default: return Colors.grey;
+      case 6:
+        return Colors.green; // Offered / Accepted
+      case 7:
+        return Colors.red; // Rejected
+      default:
+        return Colors.grey;
     }
   }
 
@@ -64,8 +82,12 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
       final isConfirm = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text(statusId == 6 ? 'Chấp nhận ứng viên' : 'Từ chối ứng viên'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            statusId == 6 ? 'Chấp nhận ứng viên' : 'Từ chối ứng viên',
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +104,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'Nhập nội dung lưu ý...',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   contentPadding: const EdgeInsets.all(10),
                 ),
               ),
@@ -98,7 +122,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               style: ElevatedButton.styleFrom(
                 backgroundColor: statusId == 6 ? Colors.green : Colors.red,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               child: const Text('Xác nhận'),
             ),
@@ -113,9 +139,13 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
       final isConfirm = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: const Text('Đánh dấu đang xem xét'),
-          content: const Text('Bạn muốn chuyển trạng thái hồ sơ này thành "Đang xem xét"?'),
+          content: const Text(
+            'Bạn muốn chuyển trạng thái hồ sơ này thành "Đang xem xét"?',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx, false),
@@ -126,7 +156,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               child: const Text('Xác nhận'),
             ),
@@ -141,11 +173,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
     });
 
     try {
-      await ref.read(employerApplicationsProvider.notifier).updateStatus(
-            widget.application.id,
-            statusId,
-            notes: notes,
-          );
+      await ref
+          .read(employerApplicationsProvider.notifier)
+          .updateStatus(widget.application.id, statusId, notes: notes);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -193,12 +223,16 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
         centerTitle: true,
       ),
       body: _isActioning
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF14003E)))
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF14003E)),
+            )
           : FutureBuilder<CvDto>(
               future: _cvFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(color: Color(0xFF14003E)));
+                  return const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF14003E)),
+                  );
                 }
 
                 if (snapshot.hasError) {
@@ -208,7 +242,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                          const Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: Colors.red,
+                          ),
                           const SizedBox(height: 16),
                           Text(
                             'Lỗi tải thông tin CV: ${snapshot.error}',
@@ -232,7 +270,8 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                       const SizedBox(height: 16),
 
                       // Thư ứng tuyển
-                      if (app.coverLetter != null && app.coverLetter!.trim().isNotEmpty) ...[
+                      if (app.coverLetter != null &&
+                          app.coverLetter!.trim().isNotEmpty) ...[
                         _buildSectionHeader('Thư giới thiệu / Cover Letter'),
                         _buildCoverLetterCard(app.coverLetter!),
                         const SizedBox(height: 16),
@@ -258,24 +297,29 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                       ],
 
                       // Kinh nghiệm
-                      if (cv.experiences != null && cv.experiences!.isNotEmpty) ...[
+                      if (cv.experiences != null &&
+                          cv.experiences!.isNotEmpty) ...[
                         _buildSectionHeader('Kinh nghiệm làm việc'),
                         _buildExperiencesCard(cv.experiences!),
                         const SizedBox(height: 16),
                       ],
 
                       // Học vấn chi tiết
-                      if (cv.educations != null && cv.educations!.isNotEmpty) ...[
+                      if (cv.educations != null &&
+                          cv.educations!.isNotEmpty) ...[
                         _buildSectionHeader('Lịch sử đào tạo'),
                         _buildEducationsCard(cv.educations!),
                         const SizedBox(height: 16),
                       ],
 
                       // Chứng chỉ
-                      if (cv.certificates != null && cv.certificates!.isNotEmpty) ...[
+                      if (cv.certificates != null &&
+                          cv.certificates!.isNotEmpty) ...[
                         _buildSectionHeader('Chứng chỉ & Bằng cấp'),
                         _buildCertificatesCard(cv.certificates!),
-                        const SizedBox(height: 100), // Khoảng trống cho Action Bar ở đáy
+                        const SizedBox(
+                          height: 100,
+                        ), // Khoảng trống cho Action Bar ở đáy
                       ],
                     ],
                   ),
@@ -291,7 +335,7 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 10,
               offset: const Offset(0, -4),
-            )
+            ),
           ],
         ),
         child: Row(
@@ -305,7 +349,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                     context: context,
                     barrierDismissible: false,
                     builder: (ctx) => const Center(
-                      child: CircularProgressIndicator(color: Color(0xFF14003E)),
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF14003E),
+                      ),
                     ),
                   );
 
@@ -317,10 +363,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                     }
 
                     final chatService = ref.read(chatServiceProvider);
-                    final conversation = await chatService.getOrCreateConversation(
-                      studentUserId, // ID của sinh viên ứng tuyển
-                      app.jobPostId, // ID tin tuyển dụng tương ứng
-                    );
+                    final conversation = await chatService
+                        .getOrCreateConversation(
+                          studentUserId, // ID của sinh viên ứng tuyển
+                          app.jobPostId, // ID tin tuyển dụng tương ứng
+                        );
 
                     if (context.mounted) Navigator.pop(context);
 
@@ -348,12 +395,23 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                     }
                   }
                 },
-                icon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF14003E)),
-                label: const Text('Chat', style: TextStyle(color: Color(0xFF14003E), fontWeight: FontWeight.bold)),
+                icon: const Icon(
+                  Icons.chat_bubble_outline,
+                  color: Color(0xFF14003E),
+                ),
+                label: const Text(
+                  'Chat',
+                  style: TextStyle(
+                    color: Color(0xFF14003E),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   side: const BorderSide(color: Color(0xFF14003E)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
@@ -373,9 +431,14 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        child: const Text('Xem xét', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: const Text(
+                          'Xem xét',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -388,9 +451,14 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                      child: const Text('Nhận', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Nhận',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -402,9 +470,14 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                      child: const Text('Từ chối', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Từ chối',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],
@@ -430,7 +503,12 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
     );
   }
 
-  Widget _buildOverviewCard(ApplicationDto app, CvDto cv, Color statusColor, String statusLabel) {
+  Widget _buildOverviewCard(
+    ApplicationDto app,
+    CvDto cv,
+    Color statusColor,
+    String statusLabel,
+  ) {
     final initials = app.applicantName.isNotEmpty
         ? app.applicantName.trim().split(' ').last.substring(0, 1).toUpperCase()
         : 'U';
@@ -444,7 +522,7 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 12,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       padding: const EdgeInsets.all(16),
@@ -454,10 +532,16 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             children: [
               CircleAvatar(
                 radius: 36,
-                backgroundColor: const Color(0xFF14003E).withValues(alpha: 0.08),
+                backgroundColor: const Color(
+                  0xFF14003E,
+                ).withValues(alpha: 0.08),
                 child: Text(
                   initials,
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF14003E)),
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF14003E),
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -467,24 +551,41 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                   children: [
                     Text(
                       app.applicantName,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF14003E)),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF14003E),
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       cv.targetPosition ?? cv.major ?? 'Sinh viên tìm việc',
-                      style: TextStyle(fontSize: 13, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: statusColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: statusColor.withValues(alpha: 0.4)),
+                        border: Border.all(
+                          color: statusColor.withValues(alpha: 0.4),
+                        ),
                       ),
                       child: Text(
                         statusLabel,
-                        style: TextStyle(color: statusColor, fontSize: 11, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: statusColor,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -503,12 +604,20 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.feedback_outlined, size: 16, color: Colors.blueGrey),
+                  const Icon(
+                    Icons.feedback_outlined,
+                    size: 16,
+                    color: Colors.blueGrey,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Lưu ý xem xét: "${app.reviewNotes}"',
-                      style: const TextStyle(fontSize: 12, color: Colors.blueGrey, fontStyle: FontStyle.italic),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.blueGrey,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ),
                 ],
@@ -526,12 +635,19 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFFDAE5C).withValues(alpha: 0.3)),
+        border: Border.all(
+          color: const Color(0xFFFDAE5C).withValues(alpha: 0.3),
+        ),
       ),
       padding: const EdgeInsets.all(16),
       child: Text(
         text,
-        style: TextStyle(fontSize: 13, color: Colors.grey.shade800, height: 1.5, fontStyle: FontStyle.italic),
+        style: TextStyle(
+          fontSize: 13,
+          color: Colors.grey.shade800,
+          height: 1.5,
+          fontStyle: FontStyle.italic,
+        ),
       ),
     );
   }
@@ -545,9 +661,17 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          _buildInfoRow(Icons.school_outlined, 'Trường đại học', cv.university ?? 'Chưa cập nhật'),
+          _buildInfoRow(
+            Icons.school_outlined,
+            'Trường đại học',
+            cv.university ?? 'Chưa cập nhật',
+          ),
           const Divider(height: 20),
-          _buildInfoRow(Icons.book_outlined, 'Chuyên ngành học', cv.major ?? 'Chưa cập nhật'),
+          _buildInfoRow(
+            Icons.book_outlined,
+            'Chuyên ngành học',
+            cv.major ?? 'Chưa cập nhật',
+          ),
           const Divider(height: 20),
           Row(
             children: [
@@ -568,11 +692,23 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             ],
           ),
           const Divider(height: 20),
-          _buildInfoRow(Icons.mail_outline, 'Hộp thư liên hệ', cv.email ?? widget.application.employerName),
+          _buildInfoRow(
+            Icons.mail_outline,
+            'Hộp thư liên hệ',
+            cv.email ?? widget.application.employerName,
+          ),
           const Divider(height: 20),
-          _buildInfoRow(Icons.phone_outlined, 'Số điện thoại', cv.phoneNumber ?? 'Chưa cập nhật'),
+          _buildInfoRow(
+            Icons.phone_outlined,
+            'Số điện thoại',
+            cv.phoneNumber ?? 'Chưa cập nhật',
+          ),
           const Divider(height: 20),
-          _buildInfoRow(Icons.location_on_outlined, 'Địa chỉ hiện tại', cv.address ?? 'Chưa cập nhật'),
+          _buildInfoRow(
+            Icons.location_on_outlined,
+            'Địa chỉ hiện tại',
+            cv.address ?? 'Chưa cập nhật',
+          ),
         ],
       ),
     );
@@ -583,7 +719,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
       decoration: BoxDecoration(
         color: const Color(0xFF14003E).withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF14003E).withValues(alpha: 0.1)),
+        border: Border.all(
+          color: const Color(0xFF14003E).withValues(alpha: 0.1),
+        ),
       ),
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -596,7 +734,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               children: const [
                 Text(
                   'Tài liệu CV đính kèm',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF14003E)),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Color(0xFF14003E),
+                  ),
                 ),
                 SizedBox(height: 2),
                 Text(
@@ -617,7 +759,9 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF14003E),
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ),
         ],
@@ -628,7 +772,10 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
   Widget _buildSkillsCard(List<CvSkillDto> skills) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
       padding: const EdgeInsets.all(16),
       child: Wrap(
         spacing: 8,
@@ -645,13 +792,20 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               children: [
                 Text(
                   skill.skillName,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF14003E)),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: Color(0xFF14003E),
+                  ),
                 ),
                 if (skill.proficiencyLevel != null) ...[
                   const SizedBox(width: 4),
                   Text(
                     '⭐${skill.proficiencyLevel}',
-                    style: const TextStyle(fontSize: 10, color: Color(0xFFFDAE5C)),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Color(0xFFFDAE5C),
+                    ),
                   ),
                 ],
               ],
@@ -664,7 +818,10 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
 
   Widget _buildExperiencesCard(List<CvExperienceDto> expList) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
         shrinkWrap: true,
@@ -679,7 +836,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             children: [
               Text(
                 exp.position,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF14003E)),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Color(0xFF14003E),
+                ),
               ),
               const SizedBox(height: 4),
               Row(
@@ -687,7 +848,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                 children: [
                   Text(
                     exp.companyName,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   Text(
                     '${exp.startDate} - $end',
@@ -695,11 +860,16 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                   ),
                 ],
               ),
-              if (exp.description != null && exp.description!.trim().isNotEmpty) ...[
+              if (exp.description != null &&
+                  exp.description!.trim().isNotEmpty) ...[
                 const SizedBox(height: 8),
                 Text(
                   exp.description!,
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade700, height: 1.4),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade700,
+                    height: 1.4,
+                  ),
                 ),
               ],
             ],
@@ -711,7 +881,10 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
 
   Widget _buildEducationsCard(List<CvEducationDto> eduList) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
         shrinkWrap: true,
@@ -725,7 +898,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             children: [
               Text(
                 '${edu.degree} - ${edu.fieldOfStudy ?? ""}',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF14003E)),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Color(0xFF14003E),
+                ),
               ),
               const SizedBox(height: 4),
               Row(
@@ -733,7 +910,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                 children: [
                   Text(
                     edu.institutionName,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   Text(
                     '${edu.startDate} - ${edu.endDate ?? ""}',
@@ -745,14 +926,23 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                 const SizedBox(height: 4),
                 Text(
                   'GPA: ${edu.gpa!.toStringAsFixed(2)}',
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFFDAE5C)),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFDAE5C),
+                  ),
                 ),
               ],
-              if (edu.description != null && edu.description!.trim().isNotEmpty) ...[
+              if (edu.description != null &&
+                  edu.description!.trim().isNotEmpty) ...[
                 const SizedBox(height: 8),
                 Text(
                   edu.description!,
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade700, height: 1.4),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade700,
+                    height: 1.4,
+                  ),
                 ),
               ],
             ],
@@ -764,7 +954,10 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
 
   Widget _buildCertificatesCard(List<CvCertificateDto> certs) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
         shrinkWrap: true,
@@ -778,7 +971,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
             children: [
               Text(
                 cert.name,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF14003E)),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Color(0xFF14003E),
+                ),
               ),
               const SizedBox(height: 4),
               Row(
@@ -786,7 +983,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
                 children: [
                   Text(
                     cert.issuingOrganization ?? 'Tổ chức cấp bằng',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   if (cert.issueDate != null)
                     Text(
@@ -819,7 +1020,11 @@ class _EmployerApplicationDetailScreenState extends ConsumerState<EmployerApplic
               const SizedBox(height: 2),
               Text(
                 value,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF14003E)),
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF14003E),
+                ),
               ),
             ],
           ),

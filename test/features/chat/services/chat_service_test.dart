@@ -18,28 +18,32 @@ void main() {
 
   group('ChatService', () {
     final mockResponse = [
-      {
-        'id': '1',
-        'participants': [],
-        'messages': [],
-      }
+      {'id': '1', 'participants': [], 'messages': []},
     ];
 
-    test('getMyConversations returns List<ChatConversationDto> on success', () async {
-      when(() => mockApiClient.get('/chats/conversations'))
-          .thenAnswer((_) async => mockResponse);
+    test(
+      'getMyConversations returns List<ChatConversationDto> on success',
+      () async {
+        when(
+          () => mockApiClient.get('/chats/conversations'),
+        ).thenAnswer((_) async => mockResponse);
 
-      final result = await chatService.getMyConversations();
+        final result = await chatService.getConversations();
 
-      expect(result, isA<List<ChatConversationDto>>());
-      verify(() => mockApiClient.get('/chats/conversations')).called(1);
-    });
+        expect(result, isA<List<ChatConversationDto>>());
+        verify(() => mockApiClient.get('/chats/conversations')).called(1);
+      },
+    );
 
     test('getMyConversations throws ApiException on failure', () async {
-      when(() => mockApiClient.get('/chats/conversations'))
-          .thenThrow(ApiException('Error', 500));
+      when(
+        () => mockApiClient.get('/chats/conversations'),
+      ).thenThrow(ApiException('Error', 500));
 
-      expect(() => chatService.getMyConversations(), throwsA(isA<ApiException>()));
+      expect(
+        () => chatService.getConversations(),
+        throwsA(isA<ApiException>()),
+      );
     });
   });
 }

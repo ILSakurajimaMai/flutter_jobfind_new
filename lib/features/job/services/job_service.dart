@@ -7,21 +7,23 @@ class JobService {
   final ApiClient _apiClient;
   JobService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
-  Future<PaginatedListDto<JobPostDto>> getAllJobs({int page = 1, int pageSize = 50}) async {
+  Future<PaginatedListDto<JobPostDto>> getAllJobs({
+    int page = 1,
+    int pageSize = 50,
+  }) async {
     final data = await _apiClient.get(
       '/jobposts',
-      queryParameters: {
-        'pageNumber': page,
-        'pageSize': pageSize,
-      },
+      queryParameters: {'pageNumber': page, 'pageSize': pageSize},
     );
-    
+
     if (data is Map<String, dynamic> && data.containsKey('items')) {
-       return PaginatedListDto.fromJson(data, JobPostDto.fromJson);
+      return PaginatedListDto.fromJson(data, JobPostDto.fromJson);
     }
-    
+
     if (data is List) {
-      final list = data.map((e) => JobPostDto.fromJson(e as Map<String, dynamic>)).toList();
+      final list = data
+          .map((e) => JobPostDto.fromJson(e as Map<String, dynamic>))
+          .toList();
       return PaginatedListDto(
         items: list,
         pageNumber: 1,
@@ -35,7 +37,11 @@ class JobService {
     throw Exception('Định dạng dữ liệu không xác định từ Backend');
   }
 
-  Future<PaginatedListDto<JobPostDto>> searchJobs(String searchTerm, {int page = 1, int pageSize = 50}) async {
+  Future<PaginatedListDto<JobPostDto>> searchJobs(
+    String searchTerm, {
+    int page = 1,
+    int pageSize = 50,
+  }) async {
     final data = await _apiClient.get(
       '/jobposts/search',
       queryParameters: {
@@ -44,13 +50,15 @@ class JobService {
         'pageSize': pageSize,
       },
     );
-    
+
     if (data is Map<String, dynamic> && data.containsKey('items')) {
-       return PaginatedListDto.fromJson(data, JobPostDto.fromJson);
+      return PaginatedListDto.fromJson(data, JobPostDto.fromJson);
     }
-    
+
     if (data is List) {
-      final list = data.map((e) => JobPostDto.fromJson(e as Map<String, dynamic>)).toList();
+      final list = data
+          .map((e) => JobPostDto.fromJson(e as Map<String, dynamic>))
+          .toList();
       return PaginatedListDto(
         items: list,
         pageNumber: 1,

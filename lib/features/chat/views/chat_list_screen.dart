@@ -20,7 +20,8 @@ class ChatListScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF14003E),
         foregroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Ẩn nút Back vì màn hình này là tab trong BottomNav
+        automaticallyImplyLeading:
+            false, // Ẩn nút Back vì màn hình này là tab trong BottomNav
         title: const Text(
           'Hộp thoại tin nhắn',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -29,59 +30,65 @@ class ChatListScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => ref.read(chatListProvider.notifier).loadConversations(),
+            onPressed: () =>
+                ref.read(chatListProvider.notifier).loadConversations(),
           ),
         ],
       ),
       body: chatState.isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF14003E)))
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF14003E)),
+            )
           : chatState.error != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Lỗi: ${chatState.error}',
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () => ref.read(chatListProvider.notifier).loadConversations(),
-                        child: const Text('Thử lại'),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Lỗi: ${chatState.error}',
+                    style: const TextStyle(color: Colors.red),
                   ),
-                )
-              : chatState.conversations.isEmpty
-                  ? _buildEmptyState()
-                  : RefreshIndicator(
-                      onRefresh: () => ref.read(chatListProvider.notifier).loadConversations(),
-                      color: const Color(0xFF14003E),
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: chatState.conversations.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final conversation = chatState.conversations[index];
-                          // Hiển thị tên của đối phương dựa vào vai trò hiện tại
-                          final peerName = isEmployer
-                              ? conversation.studentName
-                              : conversation.employerName;
-                          final peerId = isEmployer
-                              ? conversation.studentId
-                              : conversation.employerId;
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () =>
+                        ref.read(chatListProvider.notifier).loadConversations(),
+                    child: const Text('Thử lại'),
+                  ),
+                ],
+              ),
+            )
+          : chatState.conversations.isEmpty
+          ? _buildEmptyState()
+          : RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(chatListProvider.notifier).loadConversations(),
+              color: const Color(0xFF14003E),
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: chatState.conversations.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final conversation = chatState.conversations[index];
+                  // Hiển thị tên của đối phương dựa vào vai trò hiện tại
+                  final peerName = isEmployer
+                      ? conversation.studentName
+                      : conversation.employerName;
+                  final peerId = isEmployer
+                      ? conversation.studentId
+                      : conversation.employerId;
 
-                          return _buildConversationCard(
-                            context,
-                            conversation,
-                            peerName,
-                            peerId,
-                          );
-                        },
-                      ),
-                    ),
+                  return _buildConversationCard(
+                    context,
+                    conversation,
+                    peerName,
+                    peerId,
+                  );
+                },
+              ),
+            ),
     );
   }
 
@@ -96,7 +103,11 @@ class ChatListScreen extends ConsumerWidget {
             SizedBox(height: 16),
             Text(
               'Chưa có cuộc trò chuyện nào',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
             ),
             SizedBox(height: 8),
             Text(
@@ -149,10 +160,13 @@ class ChatListScreen extends ConsumerWidget {
               color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 10,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
           border: hasUnread
-              ? Border.all(color: const Color(0xFF0D9D58).withValues(alpha: 0.3), width: 1.5)
+              ? Border.all(
+                  color: const Color(0xFF0D9D58).withValues(alpha: 0.3),
+                  width: 1.5,
+                )
               : Border.all(color: Colors.transparent),
         ),
         child: Row(
@@ -162,7 +176,11 @@ class ChatListScreen extends ConsumerWidget {
               backgroundColor: const Color(0xFF14003E).withValues(alpha: 0.08),
               child: Text(
                 initials,
-                style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF14003E), fontSize: 18),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF14003E),
+                  fontSize: 18,
+                ),
               ),
             ),
             const SizedBox(width: 14),
@@ -177,7 +195,9 @@ class ChatListScreen extends ConsumerWidget {
                         child: Text(
                           peerName,
                           style: TextStyle(
-                            fontWeight: hasUnread ? FontWeight.bold : FontWeight.w600,
+                            fontWeight: hasUnread
+                                ? FontWeight.bold
+                                : FontWeight.w600,
                             fontSize: 15,
                             color: const Color(0xFF14003E),
                           ),
@@ -190,8 +210,12 @@ class ChatListScreen extends ConsumerWidget {
                           timeStr,
                           style: TextStyle(
                             fontSize: 11,
-                            color: hasUnread ? const Color(0xFF0D9D58) : Colors.grey,
-                            fontWeight: hasUnread ? FontWeight.bold : FontWeight.normal,
+                            color: hasUnread
+                                ? const Color(0xFF0D9D58)
+                                : Colors.grey,
+                            fontWeight: hasUnread
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                     ],
@@ -199,14 +223,21 @@ class ChatListScreen extends ConsumerWidget {
                   const SizedBox(height: 6),
                   if (conv.jobPostTitle != null) ...[
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
                         'Công việc: ${conv.jobPostTitle}',
-                        style: const TextStyle(fontSize: 11, color: Colors.blueGrey, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.blueGrey,
+                          fontWeight: FontWeight.w500,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -218,7 +249,9 @@ class ChatListScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 13,
                       color: hasUnread ? Colors.black87 : Colors.grey.shade600,
-                      fontWeight: hasUnread ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: hasUnread
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -236,10 +269,14 @@ class ChatListScreen extends ConsumerWidget {
                 ),
                 child: Text(
                   '${conv.unreadCount}',
-                  style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),

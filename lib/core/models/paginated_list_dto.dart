@@ -15,9 +15,16 @@ class PaginatedListDto<T> {
     required this.hasNextPage,
   });
 
-  factory PaginatedListDto.fromJson(Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
+  factory PaginatedListDto.fromJson(
+    Map<String, dynamic> json,
+    T Function(Map<String, dynamic>) fromJsonT,
+  ) {
     return PaginatedListDto<T>(
-      items: (json['items'] as List<dynamic>?)?.map((e) => fromJsonT(e as Map<String, dynamic>)).toList() ?? [],
+      items:
+          (json['items'] as List<dynamic>?)
+              ?.map((e) => fromJsonT(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       pageNumber: json['pageNumber'] ?? 1,
       totalPages: json['totalPages'] ?? 1,
       totalCount: json['totalCount'] ?? 0,

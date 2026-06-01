@@ -51,7 +51,9 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: const Text('Xóa'),
           ),
@@ -59,13 +61,16 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
       ),
     );
     if (confirmed == true && mounted) {
-      final success =
-          await ref.read(myJobPostsProvider.notifier).deleteJob(id);
+      final success = await ref.read(myJobPostsProvider.notifier).deleteJob(id);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(success ? '✅ Đã xóa tin tuyển dụng' : '❌ Xóa thất bại'),
-          backgroundColor: success ? Colors.green : Colors.red,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              success ? '✅ Đã xóa tin tuyển dụng' : '❌ Xóa thất bại',
+            ),
+            backgroundColor: success ? Colors.green : Colors.red,
+          ),
+        );
       }
     }
   }
@@ -73,22 +78,23 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
   Future<void> _toggleStatus(JobPostModel job) async {
     final newStatus = job.status == 1 ? 2 : 1;
     final label = newStatus == 1 ? 'đăng lại' : 'đóng';
-    final success =
-        await ref.read(myJobPostsProvider.notifier).changeStatus(job.id, newStatus);
+    final success = await ref
+        .read(myJobPostsProvider.notifier)
+        .changeStatus(job.id, newStatus);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(success ? '✅ Đã $label tin tuyển dụng' : '❌ Thất bại'),
-        backgroundColor: success ? Colors.green : Colors.red,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(success ? '✅ Đã $label tin tuyển dụng' : '❌ Thất bại'),
+          backgroundColor: success ? Colors.green : Colors.red,
+        ),
+      );
     }
   }
 
   void _openEdit(JobPostModel job) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => CreateJobPostScreen(jobToEdit: job),
-      ),
+      MaterialPageRoute(builder: (_) => CreateJobPostScreen(jobToEdit: job)),
     ).then((_) => ref.read(myJobPostsProvider.notifier).fetchMyJobs());
   }
 
@@ -127,7 +133,10 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
           unselectedLabelColor: Colors.white54,
           indicatorColor: const Color(0xFFFDAE5C),
           indicatorWeight: 3,
-          labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
           tabs: [
             Tab(text: 'Tất cả (${state.jobs.length})'),
             Tab(text: 'Đang tuyển (${state.activeJobs.length})'),
@@ -137,24 +146,29 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
         ),
       ),
       body: state.isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF14003E)))
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF14003E)),
+            )
           : state.error != null
-              ? _buildError(state.error!)
-              : TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildList(state.jobs),
-                    _buildList(state.activeJobs),
-                    _buildList(state.draftJobs),
-                    _buildList(state.closedJobs),
-                  ],
-                ),
+          ? _buildError(state.error!)
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                _buildList(state.jobs),
+                _buildList(state.activeJobs),
+                _buildList(state.draftJobs),
+                _buildList(state.closedJobs),
+              ],
+            ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openCreate,
         backgroundColor: const Color(0xFF14003E),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
-        label: const Text('Tạo tin mới', style: TextStyle(fontWeight: FontWeight.w600)),
+        label: const Text(
+          'Tạo tin mới',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
@@ -193,8 +207,11 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
               color: const Color(0xFF14003E).withValues(alpha: 0.06),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.post_add_outlined,
-                size: 50, color: Color(0xFF14003E)),
+            child: const Icon(
+              Icons.post_add_outlined,
+              size: 50,
+              color: Color(0xFF14003E),
+            ),
           ),
           const SizedBox(height: 24),
           const Text(
@@ -220,7 +237,8 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ],
@@ -241,7 +259,8 @@ class _MyJobPostsScreenState extends ConsumerState<MyJobPostsScreen>
             onPressed: () =>
                 ref.read(myJobPostsProvider.notifier).fetchMyJobs(),
             style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF14003E)),
+              backgroundColor: const Color(0xFF14003E),
+            ),
             child: const Text('Thử lại', style: TextStyle(color: Colors.white)),
           ),
         ],

@@ -7,13 +7,17 @@ void main() {
   Widget createWidgetUnderTest() {
     return const ProviderScope(
       child: MaterialApp(
-        home: Scaffold(body: Text('Job Detail')), // Thay bằng JobDetailScreen() thật
+        home: Scaffold(
+          body: Text('Job Detail'),
+        ), // Thay bằng JobDetailScreen() thật
       ),
     );
   }
 
   group('JobDetailScreen Widget Test', () {
-    testWidgets('renders job details and apply button', (WidgetTester tester) async {
+    testWidgets('renders job details and apply button', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       // expect(find.text('Apply Now'), findsOneWidget);

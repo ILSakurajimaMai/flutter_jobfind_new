@@ -38,9 +38,13 @@ class CompanyDto {
       taxCode: json['taxCode'],
       industry: json['industry'],
       employeeCount: json['employeeCount'],
-      foundedYear: json['foundedYear'] != null ? DateTime.tryParse(json['foundedYear']) : null,
+      foundedYear: json['foundedYear'] != null
+          ? DateTime.tryParse(json['foundedYear'])
+          : null,
       isVerified: json['isVerified'] ?? false,
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : DateTime.now(),
     );
   }
 }

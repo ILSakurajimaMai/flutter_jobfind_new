@@ -43,11 +43,11 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
     if (messageText.trim().isEmpty) return;
 
     ref.read(aiChatProvider.notifier).sendMessage(messageText);
-    
+
     if (text == null) {
       _messageController.clear();
     }
-    
+
     // Đợi UI render xong rồi cuộn xuống cuối cùng
     Future.delayed(const Duration(milliseconds: 100), _scrollToBottom);
   }
@@ -59,9 +59,14 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
         return AlertDialog(
           title: const Text(
             'Làm mới hội thoại',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF14003E)),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF14003E),
+            ),
           ),
-          content: const Text('Bạn có chắc chắn muốn xóa toàn bộ lịch sử chat hiện tại để bắt đầu phiên mới?'),
+          content: const Text(
+            'Bạn có chắc chắn muốn xóa toàn bộ lịch sử chat hiện tại để bắt đầu phiên mới?',
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -74,7 +79,9 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
               onPressed: () async {
                 final messenger = ScaffoldMessenger.of(context);
                 Navigator.pop(context);
-                final success = await ref.read(aiChatProvider.notifier).restartConversation();
+                final success = await ref
+                    .read(aiChatProvider.notifier)
+                    .restartConversation();
                 if (success) {
                   messenger.showSnackBar(
                     const SnackBar(
@@ -90,7 +97,10 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Đồng ý', style: TextStyle(color: Colors.white)),
+              child: const Text(
+                'Đồng ý',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
@@ -104,7 +114,8 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
 
     // Tự động cuộn xuống cuối khi có tin nhắn mới hoặc đang loading
     ref.listen(aiChatProvider, (previous, next) {
-      if (previous?.messages.length != next.messages.length || previous?.isLoading != next.isLoading) {
+      if (previous?.messages.length != next.messages.length ||
+          previous?.isLoading != next.isLoading) {
         Future.delayed(const Duration(milliseconds: 100), _scrollToBottom);
       }
     });
@@ -161,10 +172,7 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                       const SizedBox(width: 5),
                       const Text(
                         'Đang hoạt động',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white70,
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.white70),
                       ),
                     ],
                   ),
@@ -196,8 +204,13 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                     )
                   : ListView.builder(
                       controller: _scrollController,
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                      itemCount: chatState.messages.length + (chatState.isLoading ? 1 : 0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 20.0,
+                      ),
+                      itemCount:
+                          chatState.messages.length +
+                          (chatState.isLoading ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (index == chatState.messages.length) {
                           return _buildThinkingIndicator();
@@ -248,7 +261,10 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                     onTap: () => _handleSend(_suggestions[index]),
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14.0,
+                        vertical: 8.0,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: const Color(0xFFDCD1FF)),
@@ -282,7 +298,9 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isMe
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isMe) ...[
@@ -305,10 +323,15 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
           ],
           Flexible(
             child: Column(
-              crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: isMe
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   decoration: BoxDecoration(
                     color: isMe ? const Color(0xFF14003E) : Colors.white,
                     borderRadius: BorderRadius.only(
@@ -339,10 +362,7 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Text(
                     timeStr,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
                   ),
                 ),
               ],
@@ -376,7 +396,10 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.only(
@@ -426,9 +449,7 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Color(0xFFEBEBF0)),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFFEBEBF0))),
       ),
       child: Row(
         children: [
@@ -450,7 +471,10 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                   hintText: 'Nhập câu hỏi của bạn tại đây...',
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 10.0,
+                  ),
                 ),
               ),
             ),
@@ -462,7 +486,11 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+              icon: const Icon(
+                Icons.send_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
               onPressed: disabled ? null : () => _handleSend(),
             ),
           ),

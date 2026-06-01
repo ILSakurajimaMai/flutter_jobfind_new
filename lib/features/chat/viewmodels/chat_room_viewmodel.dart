@@ -42,7 +42,7 @@ class ChatRoomState {
 /// ViewModel quản lý kết nối và trạng thái của phòng chat chi tiết (MVVM).
 class ChatRoomViewModel extends Notifier<ChatRoomState> {
   final int conversationId;
-  
+
   ChatRoomViewModel(this.conversationId);
 
   HubConnection? _hubConnection;
@@ -51,14 +51,15 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
   @override
   ChatRoomState build() {
     _isDisposed = false;
-    
+
     // Khởi tạo phòng chat sau khi build xong
     Future.microtask(() => _initializeChat());
-    
+
     // Tự động giải phóng HubConnection khi Provider bị hủy
     ref.onDispose(() {
       _isDisposed = true;
-      if (_hubConnection != null && _hubConnection!.state == HubConnectionState.Connected) {
+      if (_hubConnection != null &&
+          _hubConnection!.state == HubConnectionState.Connected) {
         _hubConnection!.invoke("LeaveConversation", args: [conversationId]);
         _hubConnection!.stop();
       }
@@ -71,12 +72,12 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
   Future<void> _initializeChat() async {
     if (_isDisposed) return;
     state = state.copyWith(isLoading: true, error: null);
-    
+
     try {
       // 1. Tải tin nhắn lịch sử qua REST API
       final service = ref.read(chatServiceProvider);
       final history = await service.getMessages(conversationId);
-      
+
       if (_isDisposed) return;
       state = state.copyWith(messages: history, isLoading: false);
 
@@ -119,13 +120,12 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
 
       // Bắt đầu kết nối
       await _hubConnection!.start();
-      
+
       if (_isDisposed) return;
       state = state.copyWith(isConnected: true);
 
       // Đăng ký tham gia nhóm hội thoại
       await _hubConnection!.invoke("JoinConversation", args: [conversationId]);
-
     } catch (e) {
       debugPrint("Error initializing chat: $e");
       if (!_isDisposed) {
@@ -146,13 +146,13 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
 
       if (message.conversationId == conversationId) {
         if (!_isDisposed) {
-          state = state.copyWith(
-            messages: [message, ...state.messages],
-          );
+          state = state.copyWith(messages: [message, ...state.messages]);
         }
         // Tự động đánh dấu đã đọc
         ref.read(chatServiceProvider).markAsRead(conversationId);
-        ref.read(chatListProvider.notifier).updateLastMessage(
+        ref
+            .read(chatListProvider.notifier)
+            .updateLastMessage(
               conversationId,
               message.content,
               message.createdAt,
@@ -160,7 +160,9 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
             );
       } else {
         // Tin nhắn đến từ cuộc trò chuyện khác -> tăng đếm unread ở danh sách chính
-        ref.read(chatListProvider.notifier).updateLastMessage(
+        ref
+            .read(chatListProvider.notifier)
+            .updateLastMessage(
               message.conversationId,
               message.content,
               message.createdAt,
@@ -189,16 +191,20 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
   void _onMessagesMarkedAsRead(List<dynamic>? args) {
     if (!_isDisposed) {
       state = state.copyWith(
-        messages: state.messages.map((m) => ChatMessageDto(
-          id: m.id,
-          conversationId: m.conversationId,
-          senderId: m.senderId,
-          senderName: m.senderName,
-          content: m.content,
-          isRead: true,
-          readAt: DateTime.now(),
-          createdAt: m.createdAt,
-        )).toList(),
+        messages: state.messages
+            .map(
+              (m) => ChatMessageDto(
+                id: m.id,
+                conversationId: m.conversationId,
+                senderId: m.senderId,
+                senderName: m.senderName,
+                content: m.content,
+                isRead: true,
+                readAt: DateTime.now(),
+                createdAt: m.createdAt,
+              ),
+            )
+            .toList(),
       );
     }
   }
@@ -219,13 +225,15 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
         await _hubConnection!.invoke("SendMessage", args: [dto.toJson()]);
       } else {
         // Phương án dự phòng: Gửi qua REST API nếu SignalR ngắt kết nối
-        final sentMessage = await ref.read(chatServiceProvider).sendMessageRest(dto);
+        final sentMessage = await ref
+            .read(chatServiceProvider)
+            .sendMessageRest(dto);
         if (!_isDisposed) {
-          state = state.copyWith(
-            messages: [sentMessage, ...state.messages],
-          );
+          state = state.copyWith(messages: [sentMessage, ...state.messages]);
         }
-        ref.read(chatListProvider.notifier).updateLastMessage(
+        ref
+            .read(chatListProvider.notifier)
+            .updateLastMessage(
               conversationId,
               sentMessage.content,
               sentMessage.createdAt,
@@ -242,7 +250,10 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
   Future<void> sendTypingStatus(bool isTyping) async {
     if (_hubConnection != null && state.isConnected) {
       try {
-        await _hubConnection!.invoke("UpdateTyping", args: [conversationId, isTyping]);
+        await _hubConnection!.invoke(
+          "UpdateTyping",
+          args: [conversationId, isTyping],
+        );
       } catch (e) {
         debugPrint("Error sending typing status: $e");
       }
@@ -251,4 +262,7 @@ class ChatRoomViewModel extends Notifier<ChatRoomState> {
 }
 
 /// Provider dạng family để quản lý ViewModel cho từng phòng chat riêng biệt (MVVM)
-final chatRoomProvider = NotifierProvider.family<ChatRoomViewModel, ChatRoomState, int>(ChatRoomViewModel.new);
+final chatRoomProvider =
+    NotifierProvider.family<ChatRoomViewModel, ChatRoomState, int>(
+      ChatRoomViewModel.new,
+    );

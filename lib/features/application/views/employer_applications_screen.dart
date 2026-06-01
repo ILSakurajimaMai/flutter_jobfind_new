@@ -12,10 +12,12 @@ class EmployerApplicationsScreen extends ConsumerStatefulWidget {
   const EmployerApplicationsScreen({super.key, this.initialJobPostId});
 
   @override
-  ConsumerState<EmployerApplicationsScreen> createState() => _EmployerApplicationsScreenState();
+  ConsumerState<EmployerApplicationsScreen> createState() =>
+      _EmployerApplicationsScreenState();
 }
 
-class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplicationsScreen>
+class _EmployerApplicationsScreenState
+    extends ConsumerState<EmployerApplicationsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int? _selectedJobPostId;
@@ -32,7 +34,9 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(employerApplicationsProvider.notifier).fetchApplications(jobPostId: _selectedJobPostId);
+      ref
+          .read(employerApplicationsProvider.notifier)
+          .fetchApplications(jobPostId: _selectedJobPostId);
       ref.read(myJobPostsProvider.notifier).fetchMyJobs();
     });
   }
@@ -46,29 +50,45 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
 
   String _getStatusLabel(String statusName) {
     switch (statusName) {
-      case 'Pending':      return 'Chờ xét duyệt';
-      case 'Reviewing':    return 'Đang xem xét';
-      case 'Shortlisted':  return 'Đã lọc hồ sơ';
-      case 'Interviewing': return 'Đang phỏng vấn';
-      case 'Offered':      return 'Đã được offer';
-      case 'Accepted':     return 'Đã chấp nhận';
-      case 'Rejected':     return 'Bị từ chối';
-      case 'Withdrawn':    return 'Đã rút đơn';
-      case 'Expired':      return 'Hết hạn';
-      default:             return statusName;
+      case 'Pending':
+        return 'Chờ xét duyệt';
+      case 'Reviewing':
+        return 'Đang xem xét';
+      case 'Shortlisted':
+        return 'Đã lọc hồ sơ';
+      case 'Interviewing':
+        return 'Đang phỏng vấn';
+      case 'Offered':
+        return 'Đã được offer';
+      case 'Accepted':
+        return 'Đã chấp nhận';
+      case 'Rejected':
+        return 'Bị từ chối';
+      case 'Withdrawn':
+        return 'Đã rút đơn';
+      case 'Expired':
+        return 'Hết hạn';
+      default:
+        return statusName;
     }
   }
 
   Color _getStatusColor(int statusId) {
     switch (statusId) {
-      case 1: return Colors.orange; // Pending
-      case 2: return Colors.blue; // Reviewing
+      case 1:
+        return Colors.orange; // Pending
+      case 2:
+        return Colors.blue; // Reviewing
       case 3:
-      case 4: return Colors.purple; // Shortlisted / Interviewing
+      case 4:
+        return Colors.purple; // Shortlisted / Interviewing
       case 5:
-      case 6: return Colors.green; // Offered / Accepted
-      case 7: return Colors.red; // Rejected
-      default: return Colors.grey; // Withdrawn / Expired
+      case 6:
+        return Colors.green; // Offered / Accepted
+      case 7:
+        return Colors.red; // Rejected
+      default:
+        return Colors.grey; // Withdrawn / Expired
     }
   }
 
@@ -133,7 +153,7 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                     color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
-                  )
+                  ),
                 ],
               ),
               child: TextField(
@@ -145,7 +165,10 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                 },
                 decoration: InputDecoration(
                   hintText: 'Tìm kiếm ứng viên hoặc công việc...',
-                  hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: 14,
+                  ),
                   prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   suffixIcon: _searchQuery.isNotEmpty
                       ? IconButton(
@@ -174,8 +197,14 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
               unselectedLabelColor: Colors.grey.shade500,
               indicatorColor: const Color(0xFFFDAE5C),
               indicatorWeight: 3,
-              labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+              unselectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+              ),
               isScrollable: true,
               tabs: const [
                 Tab(text: 'Tất cả'),
@@ -199,12 +228,15 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                 }
 
                 return RefreshIndicator(
-                  onRefresh: () => ref.read(employerApplicationsProvider.notifier).fetchApplications(jobPostId: _selectedJobPostId),
+                  onRefresh: () => ref
+                      .read(employerApplicationsProvider.notifier)
+                      .fetchApplications(jobPostId: _selectedJobPostId),
                   color: const Color(0xFF14003E),
                   child: ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: finalApps.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 12),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final app = finalApps[index];
                       return _buildCandidateCard(app);
@@ -212,7 +244,9 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                   ),
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator(color: Color(0xFF14003E))),
+              loading: () => const Center(
+                child: CircularProgressIndicator(color: Color(0xFF14003E)),
+              ),
               error: (e, st) => _buildErrorState(e.toString()),
             ),
           ),
@@ -237,7 +271,11 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
         children: [
           const Text(
             'Lọc theo tin tuyển dụng:',
-            style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 8),
           Container(
@@ -253,8 +291,15 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                 dropdownColor: const Color(0xFF23124D),
                 icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                 isExpanded: true,
-                style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                hint: const Text('Tất cả tin tuyển dụng', style: TextStyle(color: Colors.white70)),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                hint: const Text(
+                  'Tất cả tin tuyển dụng',
+                  style: TextStyle(color: Colors.white70),
+                ),
                 items: [
                   const DropdownMenuItem<int?>(
                     value: null,
@@ -271,7 +316,9 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                   setState(() {
                     _selectedJobPostId = val;
                   });
-                  ref.read(employerApplicationsProvider.notifier).fetchApplications(jobPostId: val);
+                  ref
+                      .read(employerApplicationsProvider.notifier)
+                      .fetchApplications(jobPostId: val);
                 },
               ),
             ),
@@ -297,7 +344,7 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
             color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       padding: const EdgeInsets.all(16),
@@ -310,7 +357,9 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
               // Avatar tròn giả lập
               CircleAvatar(
                 radius: 24,
-                backgroundColor: const Color(0xFF14003E).withValues(alpha: 0.08),
+                backgroundColor: const Color(
+                  0xFF14003E,
+                ).withValues(alpha: 0.08),
                 child: Text(
                   initials,
                   style: const TextStyle(
@@ -351,7 +400,8 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
           ),
           const SizedBox(height: 12),
           // Cover Letter Snippet
-          if (app.coverLetter != null && app.coverLetter!.trim().isNotEmpty) ...[
+          if (app.coverLetter != null &&
+              app.coverLetter!.trim().isNotEmpty) ...[
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10),
@@ -363,7 +413,11 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                 'Thư ứng tuyển: "${app.coverLetter}"',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 12, color: Colors.grey.shade700, fontStyle: FontStyle.italic),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey.shade700,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -373,7 +427,10 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
             children: [
               // Trạng thái badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -401,11 +458,14 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => EmployerApplicationDetailScreen(application: app),
+                          builder: (_) =>
+                              EmployerApplicationDetailScreen(application: app),
                         ),
                       ).then((_) {
                         // Reload data to reflect state updates
-                        ref.read(employerApplicationsProvider.notifier).fetchApplications(jobPostId: _selectedJobPostId);
+                        ref
+                            .read(employerApplicationsProvider.notifier)
+                            .fetchApplications(jobPostId: _selectedJobPostId);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -415,7 +475,11 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
                     ),
                     child: const Text(
                       'Xem hồ sơ',
-                      style: TextStyle(color: Color(0xFFFDAE5C), fontWeight: FontWeight.bold, fontSize: 13),
+                      style: TextStyle(
+                        color: Color(0xFFFDAE5C),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ],
@@ -439,12 +503,20 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
               color: const Color(0xFF14003E).withValues(alpha: 0.05),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.people_outline, size: 40, color: Color(0xFF14003E)),
+            child: const Icon(
+              Icons.people_outline,
+              size: 40,
+              color: Color(0xFF14003E),
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
             'Không tìm thấy ứng viên nào',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF14003E)),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF14003E),
+            ),
           ),
           const SizedBox(height: 6),
           const Text(
@@ -467,9 +539,13 @@ class _EmployerApplicationsScreenState extends ConsumerState<EmployerApplication
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              ref.read(employerApplicationsProvider.notifier).fetchApplications(jobPostId: _selectedJobPostId);
+              ref
+                  .read(employerApplicationsProvider.notifier)
+                  .fetchApplications(jobPostId: _selectedJobPostId);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF14003E)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF14003E),
+            ),
             child: const Text('Tải lại', style: TextStyle(color: Colors.white)),
           ),
         ],

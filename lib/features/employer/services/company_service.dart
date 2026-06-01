@@ -5,7 +5,8 @@ import 'package:app_jobfind/features/employer/models/company_dto.dart';
 
 class CompanyService {
   final ApiClient _apiClient;
-  CompanyService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  CompanyService({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient();
 
   Future<CompanyDto> getMyCompany() async {
     final response = await _apiClient.get('/companies/me');

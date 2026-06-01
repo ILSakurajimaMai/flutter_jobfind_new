@@ -43,7 +43,10 @@ class _EmployerHomeScreenState extends ConsumerState<EmployerHomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const CreateJobPostScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const CreateJobPostScreen()),
+          );
         },
         backgroundColor: const Color(0xFF14003E),
         elevation: 4,
@@ -79,7 +82,9 @@ class _EmployerHomeScreenState extends ConsumerState<EmployerHomeScreen> {
         SliverToBoxAdapter(child: _buildFilterBar()),
         if (jobsState.isLoading)
           const SliverFillRemaining(
-            child: Center(child: CircularProgressIndicator(color: Color(0xFF14003E))),
+            child: Center(
+              child: CircularProgressIndicator(color: Color(0xFF14003E)),
+            ),
           )
         else if (jobsState.error != null)
           SliverFillRemaining(
@@ -87,49 +92,57 @@ class _EmployerHomeScreenState extends ConsumerState<EmployerHomeScreen> {
           )
         else if (jobsState.jobs.isEmpty)
           const SliverFillRemaining(
-            child: Center(child: Text("No job posts available.", style: TextStyle(color: Colors.grey))),
+            child: Center(
+              child: Text(
+                "No job posts available.",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
           )
         else
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
             sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  if (index == jobsState.jobs.length) {
-                    return const SizedBox(height: 80);
-                  }
-                  final job = jobsState.jobs[index];
-                  final timeAgo = timeago.format(job.createdAt, locale: 'en');
-                  final savedJobs = ref.watch(savedJobsProvider);
-                  final isSaved = savedJobs.any((j) => j.id == job.id);
+              delegate: SliverChildBuilderDelegate((context, index) {
+                if (index == jobsState.jobs.length) {
+                  return const SizedBox(height: 80);
+                }
+                final job = jobsState.jobs[index];
+                final timeAgo = timeago.format(job.createdAt, locale: 'en');
+                final savedJobs = ref.watch(savedJobsProvider);
+                final isSaved = savedJobs.any((j) => j.id == job.id);
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => JobDetailsScreen(job: job)),
-                        );
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => JobDetailsScreen(job: job),
+                        ),
+                      );
+                    },
+                    child: JobCard(
+                      logoUrl: job.companyLogoUrl ?? '',
+                      title: job.title,
+                      company: job.companyName,
+                      location: job.location ?? 'Remote',
+                      tags: job.requiredSkills.isNotEmpty
+                          ? job.requiredSkills.take(3).toList()
+                          : ['Full-time'],
+                      timeAgo: timeAgo,
+                      salary: job.salaryMax != null
+                          ? '\$${(job.salaryMax! / 1000).toStringAsFixed(0)}K'
+                          : 'Negotiable',
+                      isSaved: isSaved,
+                      onToggleSave: () {
+                        ref.read(savedJobsProvider.notifier).toggleSave(job);
                       },
-                      child: JobCard(
-                        logoUrl: job.companyLogoUrl ?? '',
-                        title: job.title,
-                        company: job.companyName,
-                        location: job.location ?? 'Remote',
-                        tags: job.requiredSkills.isNotEmpty ? job.requiredSkills.take(3).toList() : ['Full-time'],
-                        timeAgo: timeAgo,
-                        salary: job.salaryMax != null ? '\$${(job.salaryMax! / 1000).toStringAsFixed(0)}K' : 'Negotiable',
-                        isSaved: isSaved,
-                        onToggleSave: () {
-                          ref.read(savedJobsProvider.notifier).toggleSave(job);
-                        },
-                      ),
                     ),
-                  );
-                },
-                childCount: jobsState.jobs.length + 1,
-              ),
+                  ),
+                );
+              }, childCount: jobsState.jobs.length + 1),
             ),
           ),
       ],

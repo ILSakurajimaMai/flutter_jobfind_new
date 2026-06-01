@@ -34,7 +34,8 @@ class MyApplicationsScreen extends ConsumerWidget {
           }
 
           return RefreshIndicator(
-            onRefresh: () => ref.read(applicationProvider.notifier).fetchMyApplications(),
+            onRefresh: () =>
+                ref.read(applicationProvider.notifier).fetchMyApplications(),
             child: ListView.separated(
               padding: const EdgeInsets.all(16),
               itemCount: applications.length,
@@ -51,10 +52,15 @@ class MyApplicationsScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Lỗi tải dữ liệu: $e', style: const TextStyle(color: Colors.red)),
+              Text(
+                'Lỗi tải dữ liệu: $e',
+                style: const TextStyle(color: Colors.red),
+              ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => ref.read(applicationProvider.notifier).fetchMyApplications(),
+                onPressed: () => ref
+                    .read(applicationProvider.notifier)
+                    .fetchMyApplications(),
                 child: const Text('Thử lại'),
               ),
             ],
@@ -80,16 +86,26 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
   /// Trả về label tiếng Việt tương ứng với statusName từ backend
   String _getStatusLabel(String statusName) {
     switch (statusName) {
-      case 'Pending':      return 'Chờ xét duyệt';
-      case 'Reviewing':    return 'Đang xem xét';
-      case 'Shortlisted':  return 'Đã lọc hồ sơ';
-      case 'Interviewing': return 'Đang phỏng vấn';
-      case 'Offered':      return 'Đã được offer';
-      case 'Accepted':     return 'Đã chấp nhận';
-      case 'Rejected':     return 'Bị từ chối';
-      case 'Withdrawn':    return 'Đã rút đơn';
-      case 'Expired':      return 'Hết hạn';
-      default:             return statusName; // Giữ nguyên nếu không map được
+      case 'Pending':
+        return 'Chờ xét duyệt';
+      case 'Reviewing':
+        return 'Đang xem xét';
+      case 'Shortlisted':
+        return 'Đã lọc hồ sơ';
+      case 'Interviewing':
+        return 'Đang phỏng vấn';
+      case 'Offered':
+        return 'Đã được offer';
+      case 'Accepted':
+        return 'Đã chấp nhận';
+      case 'Rejected':
+        return 'Bị từ chối';
+      case 'Withdrawn':
+        return 'Đã rút đơn';
+      case 'Expired':
+        return 'Hết hạn';
+      default:
+        return statusName; // Giữ nguyên nếu không map được
     }
   }
 
@@ -119,7 +135,9 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Xác nhận rút đơn'),
-        content: const Text('Bạn có chắc chắn muốn rút đơn ứng tuyển này không?'),
+        content: const Text(
+          'Bạn có chắc chắn muốn rút đơn ứng tuyển này không?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -140,7 +158,9 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
       });
 
       try {
-        await ref.read(applicationProvider.notifier).withdrawApplication(widget.application.id);
+        await ref
+            .read(applicationProvider.notifier)
+            .withdrawApplication(widget.application.id);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Đã rút đơn ứng tuyển thành công.')),
@@ -148,9 +168,9 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Lỗi: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Lỗi: $e')));
         }
       } finally {
         if (mounted) {
@@ -168,16 +188,16 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
       if (mounted) {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => JobDetailsScreen(job: job),
-          ),
+          MaterialPageRoute(builder: (context) => JobDetailsScreen(job: job)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Không thể tải chi tiết công việc. Có thể công việc đã bị xoá.'),
+            content: Text(
+              'Không thể tải chi tiết công việc. Có thể công việc đã bị xoá.',
+            ),
           ),
         );
       }
@@ -222,7 +242,11 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: app.companyLogoUrl != null
-                      ? Image.network(app.companyLogoUrl!, fit: BoxFit.cover, errorBuilder: (c, e, s) => const Icon(Icons.business))
+                      ? Image.network(
+                          app.companyLogoUrl!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (c, e, s) => const Icon(Icons.business),
+                        )
                       : const Icon(Icons.business, color: Colors.grey),
                 ),
               ),
@@ -244,10 +268,7 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
                     const SizedBox(height: 4),
                     Text(
                       app.companyName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -270,7 +291,10 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -289,10 +313,17 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
                 children: [
                   if (canWithdraw)
                     _isWithdrawing
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
                         : IconButton(
                             onPressed: _handleWithdraw,
-                            icon: const Icon(Icons.delete_outline, color: Colors.red),
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                            ),
                             tooltip: 'Rút đơn',
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
@@ -305,7 +336,13 @@ class _ApplicationCardState extends ConsumerState<_ApplicationCard> {
                       minimumSize: const Size(0, 0),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    child: const Text('Xem chi tiết', style: TextStyle(color: Color(0xFF0D9D58), fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'Xem chi tiết',
+                      style: TextStyle(
+                        color: Color(0xFF0D9D58),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),

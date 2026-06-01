@@ -16,7 +16,8 @@ class ApplyJobBottomSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ApplyJobBottomSheet> createState() => _ApplyJobBottomSheetState();
+  ConsumerState<ApplyJobBottomSheet> createState() =>
+      _ApplyJobBottomSheetState();
 }
 
 class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
@@ -43,22 +44,24 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
     });
 
     try {
-      await ref.read(applicationProvider.notifier).applyForJob(
-        jobId: widget.jobId,
-        cvId: _selectedCvId,
-        coverLetter: _coverLetterController.text.trim(),
-      );
+      await ref
+          .read(applicationProvider.notifier)
+          .applyForJob(
+            jobId: widget.jobId,
+            cvId: _selectedCvId,
+            coverLetter: _coverLetterController.text.trim(),
+          );
       if (mounted) {
         Navigator.pop(context); // Đóng bottom sheet
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Ứng tuyển thành công!')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Ứng tuyển thành công!')));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lỗi khi ứng tuyển: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Lỗi khi ứng tuyển: $e')));
       }
     } finally {
       if (mounted) {
@@ -146,7 +149,8 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: cvs.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
                   itemBuilder: (context, index) {
                     final cv = cvs[index];
                     final isSelected = _selectedCvId == cv.id;
@@ -159,10 +163,14 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.green.shade50 : Colors.white,
+                          color: isSelected
+                              ? Colors.green.shade50
+                              : Colors.white,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isSelected ? const Color(0xFF0D9D58) : Colors.grey.shade300,
+                            color: isSelected
+                                ? const Color(0xFF0D9D58)
+                                : Colors.grey.shade300,
                             width: isSelected ? 2 : 1,
                           ),
                         ),
@@ -170,7 +178,9 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
                           children: [
                             Icon(
                               Icons.description,
-                              color: isSelected ? const Color(0xFF0D9D58) : Colors.grey,
+                              color: isSelected
+                                  ? const Color(0xFF0D9D58)
+                                  : Colors.grey,
                               size: 28,
                             ),
                             const SizedBox(width: 12),
@@ -183,12 +193,15 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
-                                      color: isSelected ? const Color(0xFF0D9D58) : Colors.black87,
+                                      color: isSelected
+                                          ? const Color(0xFF0D9D58)
+                                          : Colors.black87,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    cv.targetPosition ?? 'Chưa cập nhật vị trí ứng tuyển',
+                                    cv.targetPosition ??
+                                        'Chưa cập nhật vị trí ứng tuyển',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey.shade600,
@@ -226,7 +239,8 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
               controller: _coverLetterController,
               maxLines: 4,
               decoration: InputDecoration(
-                hintText: 'Nhập thông tin giới thiệu bản thân để nhà tuyển dụng chú ý hơn...',
+                hintText:
+                    'Nhập thông tin giới thiệu bản thân để nhà tuyển dụng chú ý hơn...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(color: Colors.grey.shade300),
@@ -248,7 +262,9 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: _isApplying || cvAsyncValue.value?.isEmpty == true ? null : _handleApply,
+                onPressed: _isApplying || cvAsyncValue.value?.isEmpty == true
+                    ? null
+                    : _handleApply,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0D9D58),
                   shape: RoundedRectangleBorder(
@@ -260,7 +276,10 @@ class _ApplyJobBottomSheetState extends ConsumerState<ApplyJobBottomSheet> {
                     ? const SizedBox(
                         width: 24,
                         height: 24,
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
                       )
                     : const Text(
                         'Xác nhận ứng tuyển',

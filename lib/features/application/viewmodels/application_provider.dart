@@ -8,15 +8,18 @@ import 'package:app_jobfind/features/auth/viewmodels/auth_provider.dart';
 
 final applicationServiceProvider = Provider((ref) => ApplicationService());
 
-final applicationProvider = AsyncNotifierProvider<ApplicationNotifier, List<ApplicationDto>>(() {
-  return ApplicationNotifier();
-});
+final applicationProvider =
+    AsyncNotifierProvider<ApplicationNotifier, List<ApplicationDto>>(() {
+      return ApplicationNotifier();
+    });
 
 class ApplicationNotifier extends AsyncNotifier<List<ApplicationDto>> {
   @override
   Future<List<ApplicationDto>> build() async {
-    ref.watch(authProvider); // Tự động reset state khi authProvider thay đổi (Logout/Login)
-    
+    ref.watch(
+      authProvider,
+    ); // Tự động reset state khi authProvider thay đổi (Logout/Login)
+
     final authState = ref.read(authProvider);
     if (!authState.isAuthenticated) return [];
 
@@ -51,9 +54,11 @@ class ApplicationNotifier extends AsyncNotifier<List<ApplicationDto>> {
         resumeUrl: resumeUrl,
       );
       final newApp = await service.createApplication(dto);
-      
+
       if (state.hasValue) {
-        final existingIndex = state.value!.indexWhere((app) => app.id == newApp.id);
+        final existingIndex = state.value!.indexWhere(
+          (app) => app.id == newApp.id,
+        );
         if (existingIndex >= 0) {
           // Backend tái sử dụng ID cũ (Re-activate). Cập nhật đè lên thay vì thêm mới để tránh trùng ID.
           final updatedList = List<ApplicationDto>.from(state.value!);
@@ -71,11 +76,12 @@ class ApplicationNotifier extends AsyncNotifier<List<ApplicationDto>> {
       rethrow;
     }
   }
+
   Future<void> withdrawApplication(int applicationId) async {
     try {
       final service = ref.read(applicationServiceProvider);
       await service.withdrawApplication(applicationId);
-      
+
       if (state.hasValue) {
         state = AsyncValue.data(
           state.value!.map((app) {

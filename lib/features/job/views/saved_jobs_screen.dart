@@ -17,7 +17,11 @@ class SavedJobsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Công việc đang theo dõi',
-          style: TextStyle(color: Color(0xFF14003E), fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Color(0xFF14003E),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,7 +48,9 @@ class SavedJobsScreen extends ConsumerWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => JobDetailsScreen(job: job)),
+                        MaterialPageRoute(
+                          builder: (_) => JobDetailsScreen(job: job),
+                        ),
                       );
                     },
                     child: JobCard(
@@ -52,9 +58,13 @@ class SavedJobsScreen extends ConsumerWidget {
                       title: job.title,
                       company: job.companyName,
                       location: job.location ?? 'Remote',
-                      tags: job.requiredSkills.isNotEmpty ? job.requiredSkills.take(3).toList() : ['Full-time'],
+                      tags: job.requiredSkills.isNotEmpty
+                          ? job.requiredSkills.take(3).toList()
+                          : ['Full-time'],
                       timeAgo: timeAgo,
-                      salary: job.salaryMax != null ? '\$${(job.salaryMax! / 1000).toStringAsFixed(0)}K' : 'Negotiable',
+                      salary: job.salaryMax != null
+                          ? '\$${(job.salaryMax! / 1000).toStringAsFixed(0)}K'
+                          : 'Negotiable',
                       isSaved: true,
                       onToggleSave: () {
                         ref.read(savedJobsProvider.notifier).toggleSave(job);

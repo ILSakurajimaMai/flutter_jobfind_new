@@ -30,9 +30,13 @@ class ChatMessageDto {
       readAt: json['readAt'] != null
           ? DateTime.tryParse(json['readAt'])
           : json['ReadAt'] != null
-              ? DateTime.tryParse(json['ReadAt'])
-              : null,
-      createdAt: DateTime.parse(json['createdAt'] ?? json['CreatedAt'] ?? DateTime.now().toIso8601String()),
+          ? DateTime.tryParse(json['ReadAt'])
+          : null,
+      createdAt: DateTime.parse(
+        json['createdAt'] ??
+            json['CreatedAt'] ??
+            DateTime.now().toIso8601String(),
+      ),
     );
   }
 }

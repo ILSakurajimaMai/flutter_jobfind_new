@@ -18,16 +18,13 @@ void main() {
 
   group('CvService', () {
     final mockResponse = [
-      {
-        'id': '1',
-        'fileUrl': 'https://example.com/cv.pdf',
-        'isDefault': true,
-      }
+      {'id': '1', 'fileUrl': 'https://example.com/cv.pdf', 'isDefault': true},
     ];
 
     test('getMyCvs returns List<CvDto> on success', () async {
-      when(() => mockApiClient.get('/cvs/my-cvs'))
-          .thenAnswer((_) async => mockResponse);
+      when(
+        () => mockApiClient.get('/cvs/my-cvs'),
+      ).thenAnswer((_) async => mockResponse);
 
       final result = await cvService.getMyCvs();
 
@@ -37,8 +34,9 @@ void main() {
     });
 
     test('getMyCvs throws ApiException on failure', () async {
-      when(() => mockApiClient.get('/cvs/my-cvs'))
-          .thenThrow(ApiException('Not found', 404));
+      when(
+        () => mockApiClient.get('/cvs/my-cvs'),
+      ).thenThrow(ApiException('Not found', 404));
 
       expect(() => cvService.getMyCvs(), throwsA(isA<ApiException>()));
     });

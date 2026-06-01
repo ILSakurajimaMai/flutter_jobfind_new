@@ -38,10 +38,14 @@ class ChatConversationDto {
       lastMessageAt: json['lastMessageAt'] != null
           ? DateTime.tryParse(json['lastMessageAt'])
           : json['LastMessageAt'] != null
-              ? DateTime.tryParse(json['LastMessageAt'])
-              : null,
+          ? DateTime.tryParse(json['LastMessageAt'])
+          : null,
       unreadCount: json['unreadCount'] ?? json['UnreadCount'] ?? 0,
-      createdAt: DateTime.parse(json['createdAt'] ?? json['CreatedAt'] ?? DateTime.now().toIso8601String()),
+      createdAt: DateTime.parse(
+        json['createdAt'] ??
+            json['CreatedAt'] ??
+            DateTime.now().toIso8601String(),
+      ),
     );
   }
 }

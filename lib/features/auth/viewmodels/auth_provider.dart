@@ -64,10 +64,7 @@ class AuthNotifier extends Notifier<AuthState> {
       expiresAt: expiresAt,
     );
 
-    state = state.copyWith(
-      isAuthenticated: true,
-      user: user,
-    );
+    state = state.copyWith(isAuthenticated: true, user: user);
   }
 
   /// Hàm Đăng Nhập
@@ -82,7 +79,10 @@ class AuthNotifier extends Notifier<AuthState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('accessToken', userResponse.accessToken);
       await prefs.setString('refreshToken', userResponse.refreshToken);
-      await prefs.setString('expiresAt', userResponse.expiresAt.toIso8601String());
+      await prefs.setString(
+        'expiresAt',
+        userResponse.expiresAt.toIso8601String(),
+      );
       await prefs.setInt('userId', userResponse.userId);
       await prefs.setString('email', userResponse.email);
       if (userResponse.fullName != null) {
@@ -107,23 +107,23 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  /// Hàm Đăng Ký 
+  /// Hàm Đăng Ký
   Future<bool> register(RegisterDto dto) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final authService = ref.read(authServiceProvider);
       // Đợi việc đăng ký được xác nhận (API Register ném 200)
       await authService.register(dto);
-      
+
       // Xong thì tắt Loading, State vẫn vậy (chưa authenticated vì cần bắt người dùng tự gõ pass để đăng nhập tay lại một lần cho chắc)
       state = state.copyWith(isLoading: false);
-      return true; 
+      return true;
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString().replaceAll('Exception: ', ''),
       );
-      return false; 
+      return false;
     }
   }
 
@@ -146,7 +146,7 @@ class AuthNotifier extends Notifier<AuthState> {
     try {
       final authService = ref.read(authServiceProvider);
       await authService.changePassword(dto);
-      
+
       state = state.copyWith(isLoading: false);
       return true;
     } catch (e) {

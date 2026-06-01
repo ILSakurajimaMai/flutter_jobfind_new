@@ -58,15 +58,16 @@ class JobCard extends StatelessWidget {
                     ? Image.network(
                         logoUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => _buildFallbackInitial(company),
+                        errorBuilder: (context, error, stackTrace) =>
+                            _buildFallbackInitial(company),
                       )
                     : _buildFallbackInitial(company),
               ),
               GestureDetector(
                 onTap: onToggleSave,
                 child: Icon(
-                  isSaved ? Icons.bookmark : Icons.bookmark_border, 
-                  color: isSaved ? const Color(0xFF14003E) : Colors.grey, 
+                  isSaved ? Icons.bookmark : Icons.bookmark_border,
+                  color: isSaved ? const Color(0xFF14003E) : Colors.grey,
                   size: 28,
                 ),
               ),

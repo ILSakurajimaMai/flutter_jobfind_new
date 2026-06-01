@@ -4,7 +4,7 @@
 class JobShiftRequest {
   int dayOfWeek; // 0=Sunday, 1=Monday, ..., 6=Saturday
   String startTime; // "HH:mm"
-  String endTime;   // "HH:mm"
+  String endTime; // "HH:mm"
   String? notes;
 
   JobShiftRequest({
@@ -15,11 +15,11 @@ class JobShiftRequest {
   });
 
   Map<String, dynamic> toJson() => {
-        'dayOfWeek': dayOfWeek,
-        'startTime': '$startTime:00',
-        'endTime': '$endTime:00',
-        if (notes != null) 'notes': notes,
-      };
+    'dayOfWeek': dayOfWeek,
+    'startTime': '$startTime:00',
+    'endTime': '$endTime:00',
+    if (notes != null) 'notes': notes,
+  };
 
   static const dayLabels = [
     'Chủ nhật',

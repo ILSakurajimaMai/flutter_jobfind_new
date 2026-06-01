@@ -20,10 +20,7 @@ void main() {
   group('ApplicationService', () {
     final mockResponse = {
       'items': [
-        {
-          'id': '1',
-          'status': 'Pending',
-        }
+        {'id': '1', 'status': 'Pending'},
       ],
       'pageNumber': 1,
       'totalPages': 1,
@@ -33,20 +30,39 @@ void main() {
     };
 
     test('getMyApplications returns PaginatedListDto on success', () async {
-      when(() => mockApiClient.get('/applications/me', queryParameters: {'pageNumber': 1, 'pageSize': 50}))
-          .thenAnswer((_) async => mockResponse);
+      when(
+        () => mockApiClient.get(
+          '/applications/me',
+          queryParameters: {'pageNumber': 1, 'pageSize': 50},
+        ),
+      ).thenAnswer((_) async => mockResponse);
 
-      final result = await applicationService.getMyApplications(pageNumber: 1, pageSize: 50);
+      final result = await applicationService.getMyApplications(
+        pageNumber: 1,
+        pageSize: 50,
+      );
 
       expect(result, isA<PaginatedListDto<ApplicationDto>>());
-      verify(() => mockApiClient.get('/applications/me', queryParameters: {'pageNumber': 1, 'pageSize': 50})).called(1);
+      verify(
+        () => mockApiClient.get(
+          '/applications/me',
+          queryParameters: {'pageNumber': 1, 'pageSize': 50},
+        ),
+      ).called(1);
     });
 
     test('getMyApplications throws ApiException on failure', () async {
-      when(() => mockApiClient.get('/applications/me', queryParameters: {'pageNumber': 1, 'pageSize': 50}))
-          .thenThrow(ApiException('Error', 500));
+      when(
+        () => mockApiClient.get(
+          '/applications/me',
+          queryParameters: {'pageNumber': 1, 'pageSize': 50},
+        ),
+      ).thenThrow(ApiException('Error', 500));
 
-      expect(() => applicationService.getMyApplications(pageNumber: 1, pageSize: 50), throwsA(isA<ApiException>()));
+      expect(
+        () => applicationService.getMyApplications(pageNumber: 1, pageSize: 50),
+        throwsA(isA<ApiException>()),
+      );
     });
   });
 }

@@ -7,9 +7,7 @@ class AIChatService {
   Future<String> sendMessage(String message) async {
     final dynamic data = await _apiClient.post(
       '/aichat/message',
-      data: {
-        'message': message,
-      },
+      data: {'message': message},
     );
     if (data is String) {
       return data;

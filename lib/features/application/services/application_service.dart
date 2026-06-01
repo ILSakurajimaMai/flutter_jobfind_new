@@ -7,14 +7,18 @@ import 'package:app_jobfind/features/application/models/create_application_dto.d
 
 class ApplicationService {
   final ApiClient _apiClient;
-  ApplicationService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  ApplicationService({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient();
 
   /// Lấy danh sách các đơn ứng tuyển của tôi
-  Future<PaginatedListDto<ApplicationDto>> getMyApplications({int pageNumber = 1, int pageSize = 50}) async {
-    final response = await _apiClient.get('/applications/me', queryParameters: {
-      'pageNumber': pageNumber,
-      'pageSize': pageSize,
-    });
+  Future<PaginatedListDto<ApplicationDto>> getMyApplications({
+    int pageNumber = 1,
+    int pageSize = 50,
+  }) async {
+    final response = await _apiClient.get(
+      '/applications/me',
+      queryParameters: {'pageNumber': pageNumber, 'pageSize': pageSize},
+    );
     return PaginatedListDto.fromJson(
       response,
       (item) => ApplicationDto.fromJson(item),
@@ -33,11 +37,14 @@ class ApplicationService {
   }
 
   /// Lấy danh sách toàn bộ ứng viên đã ứng tuyển của Employer
-  Future<PaginatedListDto<ApplicationDto>> getEmployerApplications({int pageNumber = 1, int pageSize = 50}) async {
-    final response = await _apiClient.get('/applications/employer', queryParameters: {
-      'pageNumber': pageNumber,
-      'pageSize': pageSize,
-    });
+  Future<PaginatedListDto<ApplicationDto>> getEmployerApplications({
+    int pageNumber = 1,
+    int pageSize = 50,
+  }) async {
+    final response = await _apiClient.get(
+      '/applications/employer',
+      queryParameters: {'pageNumber': pageNumber, 'pageSize': pageSize},
+    );
     return PaginatedListDto.fromJson(
       response,
       (item) => ApplicationDto.fromJson(item),
@@ -45,11 +52,15 @@ class ApplicationService {
   }
 
   /// Lấy danh sách ứng viên ứng tuyển theo một tin tuyển dụng cụ thể
-  Future<PaginatedListDto<ApplicationDto>> getApplicationsByJob(int jobPostId, {int pageNumber = 1, int pageSize = 50}) async {
-    final response = await _apiClient.get('/applications/job/$jobPostId', queryParameters: {
-      'pageNumber': pageNumber,
-      'pageSize': pageSize,
-    });
+  Future<PaginatedListDto<ApplicationDto>> getApplicationsByJob(
+    int jobPostId, {
+    int pageNumber = 1,
+    int pageSize = 50,
+  }) async {
+    final response = await _apiClient.get(
+      '/applications/job/$jobPostId',
+      queryParameters: {'pageNumber': pageNumber, 'pageSize': pageSize},
+    );
     return PaginatedListDto.fromJson(
       response,
       (item) => ApplicationDto.fromJson(item),
@@ -57,10 +68,14 @@ class ApplicationService {
   }
 
   /// Cập nhật trạng thái đơn ứng tuyển (Employer)
-  Future<void> updateApplicationStatus(int id, {required int statusId, String? notes}) async {
-    await _apiClient.patch('/applications/$id/status', data: {
-      'statusId': statusId,
-      'notes': notes,
-    });
+  Future<void> updateApplicationStatus(
+    int id, {
+    required int statusId,
+    String? notes,
+  }) async {
+    await _apiClient.patch(
+      '/applications/$id/status',
+      data: {'statusId': statusId, 'notes': notes},
+    );
   }
 }

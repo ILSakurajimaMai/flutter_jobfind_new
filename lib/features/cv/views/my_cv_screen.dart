@@ -23,7 +23,11 @@ class MyCvScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Quản lý CV',
-          style: TextStyle(color: Color(0xFF14003E), fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Color(0xFF14003E),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -31,29 +35,60 @@ class MyCvScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: cvState.when(
-        loading: () => const Center(child: CircularProgressIndicator(color: Color(0xFF0D9D58))),
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: Color(0xFF0D9D58)),
+        ),
         error: (e, _) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.wifi_off_outlined, size: 48, color: Colors.grey),
-              const SizedBox(height: 12),
-              Text('Không tải được danh sách CV', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 6),
-              Text(e.toString(), style: const TextStyle(color: Colors.grey, fontSize: 12), textAlign: TextAlign.center),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9D58), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                icon: const Icon(Icons.refresh, color: Colors.white),
-                label: const Text('Thử lại', style: TextStyle(color: Colors.white)),
-                onPressed: () => ref.refresh(cvProvider),
-              ),
-            ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.wifi_off_outlined,
+                  size: 48,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Không tải được danh sách CV',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  e.toString(),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0D9D58),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  icon: const Icon(Icons.refresh, color: Colors.white),
+                  label: const Text(
+                    'Thử lại',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => ref.refresh(cvProvider),
+                ),
+              ],
+            ),
           ),
         ),
         data: (cvs) {
-          final uploadedCvs = cvs.where((c) => c.resumeUrl != null && c.resumeUrl!.isNotEmpty).toList();
-          final templateCvs = cvs.where((c) => c.resumeUrl == null || c.resumeUrl!.isEmpty).toList();
+          final uploadedCvs = cvs
+              .where((c) => c.resumeUrl != null && c.resumeUrl!.isNotEmpty)
+              .toList();
+          final templateCvs = cvs
+              .where((c) => c.resumeUrl == null || c.resumeUrl!.isEmpty)
+              .toList();
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
@@ -66,7 +101,9 @@ class MyCvScreen extends ConsumerWidget {
                 _buildUploadSection(context, uploadedCvs.length),
                 if (uploadedCvs.isNotEmpty) ...[
                   const SizedBox(height: 12),
-                  ...uploadedCvs.map((cv) => _buildUploadedCvCard(context, ref, cv)),
+                  ...uploadedCvs.map(
+                    (cv) => _buildUploadedCvCard(context, ref, cv),
+                  ),
                 ],
                 const SizedBox(height: 32),
 
@@ -78,10 +115,22 @@ class MyCvScreen extends ConsumerWidget {
                     TextButton.icon(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const CvTemplatesScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => const CvTemplatesScreen(),
+                        ),
                       ).then((_) => ref.refresh(cvProvider)),
-                      icon: const Icon(Icons.add, size: 18, color: Color(0xFF0D9D58)),
-                      label: const Text('Tạo mới', style: TextStyle(color: Color(0xFF0D9D58), fontWeight: FontWeight.bold)),
+                      icon: const Icon(
+                        Icons.add,
+                        size: 18,
+                        color: Color(0xFF0D9D58),
+                      ),
+                      label: const Text(
+                        'Tạo mới',
+                        style: TextStyle(
+                          color: Color(0xFF0D9D58),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -100,9 +149,13 @@ class MyCvScreen extends ConsumerWidget {
   }
 
   Widget _sectionTitle(String title) => Text(
-        title,
-        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xFF14003E)),
-      );
+    title,
+    style: const TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.bold,
+      color: Color(0xFF14003E),
+    ),
+  );
 
   Widget _buildUploadSection(BuildContext context, int count) {
     return Container(
@@ -110,35 +163,69 @@ class MyCvScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(color: const Color(0xFF0D9D58).withValues(alpha: 0.1), shape: BoxShape.circle),
-            child: const Icon(Icons.upload_file, color: Color(0xFF0D9D58), size: 28),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0D9D58).withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.upload_file,
+              color: Color(0xFF0D9D58),
+              size: 28,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('$count CV đã tải lên', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                Text(
+                  '$count CV đã tải lên',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                const Text('Hỗ trợ .doc, .docx, pdf dưới 5MB', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                const Text(
+                  'Hỗ trợ .doc, .docx, pdf dưới 5MB',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
               ],
             ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0D9D58),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               elevation: 0,
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             ),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UploadCvScreen())),
-            child: const Text('Tải lên', style: TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const UploadCvScreen()),
+            ),
+            child: const Text(
+              'Tải lên',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -164,19 +251,36 @@ class MyCvScreen extends ConsumerWidget {
               children: [
                 Text(
                   cv.title ?? 'Tài liệu không tên',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF14003E)),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Color(0xFF14003E),
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                const Text('Đã tải lên', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                const Text(
+                  'Đã tải lên',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
               ],
             ),
           ),
-          _actionIcon(Icons.download_rounded, 'Tải xuống', const Color(0xFF0D9D58), () {
-            _downloadFile(cv.resumeUrl);
-          }),
-          _actionIcon(Icons.delete_outline, 'Xóa', Colors.redAccent, () => _confirmDeleteUpload(context, ref, cv)),
+          _actionIcon(
+            Icons.download_rounded,
+            'Tải xuống',
+            const Color(0xFF0D9D58),
+            () {
+              _downloadFile(cv.resumeUrl);
+            },
+          ),
+          _actionIcon(
+            Icons.delete_outline,
+            'Xóa',
+            Colors.redAccent,
+            () => _confirmDeleteUpload(context, ref, cv),
+          ),
         ],
       ),
     );
@@ -184,13 +288,16 @@ class MyCvScreen extends ConsumerWidget {
 
   Future<void> _downloadFile(String? fileUrl) async {
     if (fileUrl == null || fileUrl.isEmpty) return;
-    
+
     // Thêm import url_launcher để mở trình duyệt tải file
     final urlStr = '${Constants.baseUrl}/files/download?fileUrl=$fileUrl';
     final uri = Uri.parse(urlStr);
     try {
       if (await url_launcher.canLaunchUrl(uri)) {
-        await url_launcher.launchUrl(uri, mode: url_launcher.LaunchMode.externalApplication);
+        await url_launcher.launchUrl(
+          uri,
+          mode: url_launcher.LaunchMode.externalApplication,
+        );
       }
     } catch (e) {
       debugPrint('Error downloading: $e');
@@ -209,13 +316,27 @@ class MyCvScreen extends ConsumerWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: const Color(0xFFFDAE5C).withValues(alpha: 0.1), shape: BoxShape.circle),
-            child: const Icon(Icons.edit_document, color: Color(0xFFFDAE5C), size: 36),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFDAE5C).withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.edit_document,
+              color: Color(0xFFFDAE5C),
+              size: 36,
+            ),
           ),
           const SizedBox(height: 16),
-          const Text('Chưa có CV nào', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+          const Text(
+            'Chưa có CV nào',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
           const SizedBox(height: 6),
-          const Text('Tạo CV từ mẫu thiết kế chuyên nghiệp', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey, fontSize: 13)),
+          const Text(
+            'Tạo CV từ mẫu thiết kế chuyên nghiệp',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey, fontSize: 13),
+          ),
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
@@ -223,11 +344,23 @@ class MyCvScreen extends ConsumerWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFFDAE5C),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 elevation: 0,
               ),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CvTemplatesScreen())),
-              child: const Text('Tạo CV mới', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white)),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CvTemplatesScreen()),
+              ),
+              child: const Text(
+                'Tạo CV mới',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
@@ -241,7 +374,13 @@ class MyCvScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -252,10 +391,16 @@ class MyCvScreen extends ConsumerWidget {
               height: 180,
               decoration: BoxDecoration(
                 color: const Color(0xFFEFEFF4),
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
               ),
               child: ClipRRect(
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
                 child: AbsorbPointer(
                   child: FittedBox(
                     fit: BoxFit.cover,
@@ -281,27 +426,51 @@ class MyCvScreen extends ConsumerWidget {
                           Flexible(
                             child: Text(
                               cv.title ?? 'CV không tên',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF14003E)),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Color(0xFF14003E),
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           if (cv.isDefault) ...[
                             const SizedBox(width: 6),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF0D9D58).withValues(alpha: 0.12),
+                                color: const Color(
+                                  0xFF0D9D58,
+                                ).withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: const Text('Mặc định', style: TextStyle(fontSize: 11, color: Color(0xFF0D9D58), fontWeight: FontWeight.bold)),
+                              child: const Text(
+                                'Mặc định',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Color(0xFF0D9D58),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ],
                         ],
                       ),
-                      if (cv.targetPosition != null && cv.targetPosition!.isNotEmpty)
+                      if (cv.targetPosition != null &&
+                          cv.targetPosition!.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 3),
-                          child: Text(cv.targetPosition!, style: const TextStyle(color: Colors.grey, fontSize: 12), overflow: TextOverflow.ellipsis),
+                          child: Text(
+                            cv.targetPosition!,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                     ],
                   ),
@@ -310,9 +479,24 @@ class MyCvScreen extends ConsumerWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _actionIcon(Icons.visibility_outlined, 'Xem', const Color(0xFF5C6BC0), () => _showViewDialog(context, cv)),
-                    _actionIcon(Icons.edit_outlined, 'Sửa', const Color(0xFF0D9D58), () => _goToEdit(context, ref, cv)),
-                    _actionIcon(Icons.delete_outline, 'Xóa', Colors.redAccent, () => _confirmDelete(context, ref, cv)),
+                    _actionIcon(
+                      Icons.visibility_outlined,
+                      'Xem',
+                      const Color(0xFF5C6BC0),
+                      () => _showViewDialog(context, cv),
+                    ),
+                    _actionIcon(
+                      Icons.edit_outlined,
+                      'Sửa',
+                      const Color(0xFF0D9D58),
+                      () => _goToEdit(context, ref, cv),
+                    ),
+                    _actionIcon(
+                      Icons.delete_outline,
+                      'Xóa',
+                      Colors.redAccent,
+                      () => _confirmDelete(context, ref, cv),
+                    ),
                   ],
                 ),
               ],
@@ -323,23 +507,32 @@ class MyCvScreen extends ConsumerWidget {
     );
   }
 
-  Widget _actionIcon(IconData icon, String tooltip, Color color, VoidCallback onTap) => Tooltip(
-        message: tooltip,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(8),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Icon(icon, color: color, size: 22),
-          ),
-        ),
-      );
+  Widget _actionIcon(
+    IconData icon,
+    String tooltip,
+    Color color,
+    VoidCallback onTap,
+  ) => Tooltip(
+    message: tooltip,
+    child: InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Icon(icon, color: color, size: 22),
+      ),
+    ),
+  );
 
   Widget _getTemplateWidget(CvDto cv) {
     // Dùng targetPosition để đoán template type (lưu tạm), mặc định impression
     final t = cv.title?.toLowerCase() ?? '';
-    if (t.contains('modern') || t.contains('hiện đại')) return CvTemplateModern(cvData: cv);
-    if (t.contains('basic') || t.contains('cơ bản')) return CvTemplateBasic(cvData: cv);
+    if (t.contains('modern') || t.contains('hiện đại')) {
+      return CvTemplateModern(cvData: cv);
+    }
+    if (t.contains('basic') || t.contains('cơ bản')) {
+      return CvTemplateBasic(cvData: cv);
+    }
     return CvTemplateImpression(cvData: cv);
   }
 
@@ -382,10 +575,18 @@ class MyCvScreen extends ConsumerWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Đóng', style: TextStyle(color: Color(0xFF14003E), fontWeight: FontWeight.bold)),
+                child: const Text(
+                  'Đóng',
+                  style: TextStyle(
+                    color: Color(0xFF14003E),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
@@ -402,7 +603,10 @@ class MyCvScreen extends ConsumerWidget {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => CvEditScreen(templateType: templateType, existingCv: cv)),
+      MaterialPageRoute(
+        builder: (_) =>
+            CvEditScreen(templateType: templateType, existingCv: cv),
+      ),
     ).then((_) => ref.refresh(cvProvider));
   }
 
@@ -411,24 +615,46 @@ class MyCvScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Xóa CV?', style: TextStyle(fontWeight: FontWeight.bold)),
-        content: Text('Bạn có chắc muốn xóa CV "${cv.title ?? 'này'}" không? Hành động này không thể hoàn tác.'),
+        title: const Text(
+          'Xóa CV?',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Bạn có chắc muốn xóa CV "${cv.title ?? 'này'}" không? Hành động này không thể hoàn tác.',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Hủy', style: TextStyle(color: Colors.grey))),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Hủy', style: TextStyle(color: Colors.grey)),
+          ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
             onPressed: () async {
               Navigator.pop(ctx);
               if (cv.id != null) {
                 await ref.read(cvProvider.notifier).removeCv(cv.id!);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('✅ Đã xóa CV'), backgroundColor: Color(0xFF0D9D58)),
+                    const SnackBar(
+                      content: Text('✅ Đã xóa CV'),
+                      backgroundColor: Color(0xFF0D9D58),
+                    ),
                   );
                 }
               }
             },
-            child: const Text('Xóa', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Xóa',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -440,24 +666,48 @@ class MyCvScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Xóa tài liệu?', style: TextStyle(fontWeight: FontWeight.bold)),
-        content: Text('Bạn có chắc muốn xóa tài liệu "${cv.title ?? 'này'}" không? Hành động này sẽ xoá luôn tệp trên hệ thống.'),
+        title: const Text(
+          'Xóa tài liệu?',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Bạn có chắc muốn xóa tài liệu "${cv.title ?? 'này'}" không? Hành động này sẽ xoá luôn tệp trên hệ thống.',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Hủy', style: TextStyle(color: Colors.grey))),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Hủy', style: TextStyle(color: Colors.grey)),
+          ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
             onPressed: () async {
               Navigator.pop(ctx);
               if (cv.id != null) {
-                await ref.read(cvProvider.notifier).deleteCvAndFile(cv.id!, cv.resumeUrl);
+                await ref
+                    .read(cvProvider.notifier)
+                    .deleteCvAndFile(cv.id!, cv.resumeUrl);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('✅ Đã xóa tài liệu'), backgroundColor: Color(0xFF0D9D58)),
+                    const SnackBar(
+                      content: Text('✅ Đã xóa tài liệu'),
+                      backgroundColor: Color(0xFF0D9D58),
+                    ),
                   );
                 }
               }
             },
-            child: const Text('Xóa', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Xóa',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),

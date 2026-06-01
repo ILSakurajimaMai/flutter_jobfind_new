@@ -25,8 +25,9 @@ void main() {
     };
 
     test('getMyProfile returns ProfileDto on success', () async {
-      when(() => mockApiClient.get('/profile/me'))
-          .thenAnswer((_) async => mockProfileResponse);
+      when(
+        () => mockApiClient.get('/profile/me'),
+      ).thenAnswer((_) async => mockProfileResponse);
 
       final result = await profileService.getMyProfile();
 
@@ -35,8 +36,9 @@ void main() {
     });
 
     test('getMyProfile throws ApiException on failure', () async {
-      when(() => mockApiClient.get('/profile/me'))
-          .thenThrow(ApiException('Lỗi server', 500));
+      when(
+        () => mockApiClient.get('/profile/me'),
+      ).thenThrow(ApiException('Lỗi server', 500));
 
       expect(() => profileService.getMyProfile(), throwsA(isA<ApiException>()));
     });

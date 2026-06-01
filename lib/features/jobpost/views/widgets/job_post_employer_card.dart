@@ -80,14 +80,18 @@ class JobPostEmployerCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(18)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(18),
+                ),
               ),
               child: Row(
                 children: [
                   // Status badge
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: _statusColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),
@@ -111,7 +115,10 @@ class JobPostEmployerCard extends StatelessWidget {
                   if (job.isUrgent) ...[
                     const SizedBox(width: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFF6B35).withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(20),
@@ -129,8 +136,14 @@ class JobPostEmployerCard extends StatelessWidget {
                   const Spacer(),
                   // Menu 3 chấm
                   PopupMenuButton<String>(
-                    icon: const Icon(Icons.more_vert, color: Colors.grey, size: 20),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     onSelected: (value) {
                       if (value == 'edit') onEdit?.call();
                       if (value == 'toggle') onToggleStatus?.call();
@@ -139,35 +152,52 @@ class JobPostEmployerCard extends StatelessWidget {
                     itemBuilder: (context) => [
                       const PopupMenuItem(
                         value: 'edit',
-                        child: Row(children: [
-                          Icon(Icons.edit_outlined, size: 18, color: Color(0xFF14003E)),
-                          SizedBox(width: 8),
-                          Text('Chỉnh sửa'),
-                        ]),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.edit_outlined,
+                              size: 18,
+                              color: Color(0xFF14003E),
+                            ),
+                            SizedBox(width: 8),
+                            Text('Chỉnh sửa'),
+                          ],
+                        ),
                       ),
                       PopupMenuItem(
                         value: 'toggle',
-                        child: Row(children: [
-                          Icon(
-                            job.status == 1
-                                ? Icons.pause_circle_outline
-                                : Icons.play_circle_outline,
-                            size: 18,
-                            color: job.status == 1
-                                ? const Color(0xFFEF4444)
-                                : const Color(0xFF22C55E),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(job.status == 1 ? 'Đóng tin' : 'Đăng lại'),
-                        ]),
+                        child: Row(
+                          children: [
+                            Icon(
+                              job.status == 1
+                                  ? Icons.pause_circle_outline
+                                  : Icons.play_circle_outline,
+                              size: 18,
+                              color: job.status == 1
+                                  ? const Color(0xFFEF4444)
+                                  : const Color(0xFF22C55E),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(job.status == 1 ? 'Đóng tin' : 'Đăng lại'),
+                          ],
+                        ),
                       ),
                       const PopupMenuItem(
                         value: 'delete',
-                        child: Row(children: [
-                          Icon(Icons.delete_outline, size: 18, color: Colors.red),
-                          SizedBox(width: 8),
-                          Text('Xóa tin', style: TextStyle(color: Colors.red)),
-                        ]),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.delete_outline,
+                              size: 18,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              'Xóa tin',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -204,7 +234,9 @@ class JobPostEmployerCard extends StatelessWidget {
                         _infoChip(Icons.work_outline, job.workType!),
                       if (job.numberOfPositions != null)
                         _infoChip(
-                            Icons.people_outline, '${job.numberOfPositions} vị trí'),
+                          Icons.people_outline,
+                          '${job.numberOfPositions} vị trí',
+                        ),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -212,8 +244,11 @@ class JobPostEmployerCard extends StatelessWidget {
                   // Salary
                   Row(
                     children: [
-                      const Icon(Icons.payments_outlined,
-                          size: 16, color: Color(0xFFFDAE5C)),
+                      const Icon(
+                        Icons.payments_outlined,
+                        size: 16,
+                        color: Color(0xFFFDAE5C),
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         job.salaryDisplay,
@@ -230,10 +265,15 @@ class JobPostEmployerCard extends StatelessWidget {
                   // Stats + skills
                   Row(
                     children: [
-                      _statBadge(Icons.visibility_outlined, '${job.viewCount} lượt xem'),
+                      _statBadge(
+                        Icons.visibility_outlined,
+                        '${job.viewCount} lượt xem',
+                      ),
                       const SizedBox(width: 8),
-                      _statBadge(Icons.person_add_outlined,
-                          '${job.applicationCount} ứng viên'),
+                      _statBadge(
+                        Icons.person_add_outlined,
+                        '${job.applicationCount} ứng viên',
+                      ),
                       const Spacer(),
                       if (job.applicationDeadline != null)
                         Text(
@@ -254,9 +294,13 @@ class JobPostEmployerCard extends StatelessWidget {
                       children: job.requiredSkills.take(4).map((skill) {
                         return Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF14003E).withValues(alpha: 0.07),
+                            color: const Color(
+                              0xFF14003E,
+                            ).withValues(alpha: 0.07),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
@@ -286,10 +330,7 @@ class JobPostEmployerCard extends StatelessWidget {
       children: [
         Icon(icon, size: 13, color: Colors.grey),
         const SizedBox(width: 3),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
-        ),
+        Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
       ],
     );
   }

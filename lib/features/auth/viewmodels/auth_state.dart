@@ -3,10 +3,13 @@ import 'package:app_jobfind/features/auth/models/auth_response_dto.dart';
 /// Trạng thái cốt lõi của tiến trình Đăng nhập / Đăng ký (Authentication)
 /// Lưu trữ cờ báo hiệu (loading), lỗi (nếu có), đối tượng thông tin người dùng và trạng thái đăng nhập.
 class AuthState {
-  final bool isLoading; // Đánh dấu API Đăng nhập/Đăng ký đang chạy (để hiện vòng xoay quay)
+  final bool
+  isLoading; // Đánh dấu API Đăng nhập/Đăng ký đang chạy (để hiện vòng xoay quay)
   final String? error; // Lưu trữ chuỗi thông báo lỗi ném về từ server nếu có
-  final AuthResponseDto? user; // Lưu trữ đối tượng DTO chứa Token bảo mật & Role của User
-  final bool isAuthenticated; // Cờ theo dõi người dùng đã đăng nhập hợp lệ hay chưa
+  final AuthResponseDto?
+  user; // Lưu trữ đối tượng DTO chứa Token bảo mật & Role của User
+  final bool
+  isAuthenticated; // Cờ theo dõi người dùng đã đăng nhập hợp lệ hay chưa
 
   AuthState({
     this.isLoading = false,

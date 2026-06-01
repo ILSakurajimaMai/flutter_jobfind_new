@@ -7,7 +7,8 @@ class CompanyProfileScreen extends ConsumerStatefulWidget {
   const CompanyProfileScreen({super.key});
 
   @override
-  ConsumerState<CompanyProfileScreen> createState() => _CompanyProfileScreenState();
+  ConsumerState<CompanyProfileScreen> createState() =>
+      _CompanyProfileScreenState();
 }
 
 class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
@@ -19,7 +20,7 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
   final _websiteController = TextEditingController();
   final _addressController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   String? _foundedYear;
 
   @override
@@ -80,7 +81,9 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
     if (currentState.isPendingApproval) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Hồ sơ đang chờ Admin phê duyệt, không thể chỉnh sửa lúc này'),
+          content: Text(
+            'Hồ sơ đang chờ Admin phê duyệt, không thể chỉnh sửa lúc này',
+          ),
           backgroundColor: Colors.orange,
         ),
       );
@@ -98,7 +101,9 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
       foundedYear: _foundedYear,
     );
 
-    final wasNewRequest = !currentState.isPendingApproval && (currentState.company?.isVerified != true);
+    final wasNewRequest =
+        !currentState.isPendingApproval &&
+        (currentState.company?.isVerified != true);
 
     final success = await ref.read(companyProvider.notifier).saveCompany(dto);
     if (mounted) {
@@ -108,7 +113,9 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
         if (wasNewRequest && newState.isPendingApproval) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('✅ Yêu cầu đăng ký công ty đã được gửi! Vui lòng chờ Admin phê duyệt.'),
+              content: Text(
+                '✅ Yêu cầu đăng ký công ty đã được gửi! Vui lòng chờ Admin phê duyệt.',
+              ),
               backgroundColor: Colors.green,
               duration: Duration(seconds: 4),
             ),
@@ -116,13 +123,19 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
           // Không pop vì cần user thấy trạng thái pending
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Cập nhật thông tin công ty thành công'), backgroundColor: Colors.green),
+            const SnackBar(
+              content: Text('Cập nhật thông tin công ty thành công'),
+              backgroundColor: Colors.green,
+            ),
           );
           Navigator.pop(context);
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(ref.read(companyProvider).error ?? 'Lỗi cập nhật'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(ref.read(companyProvider).error ?? 'Lỗi cập nhật'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -131,7 +144,9 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<CompanyState>(companyProvider, (prev, next) {
-      if (prev?.isLoading == true && next.isLoading == false && next.company != null) {
+      if (prev?.isLoading == true &&
+          next.isLoading == false &&
+          next.company != null) {
         _populateData();
       }
     });
@@ -141,14 +156,23 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
       appBar: AppBar(
-        title: const Text('Hồ sơ Công ty', style: TextStyle(color: Color(0xFF14003E), fontWeight: FontWeight.bold, fontSize: 18)),
+        title: const Text(
+          'Hồ sơ Công ty',
+          style: TextStyle(
+            color: Color(0xFF14003E),
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black54),
         centerTitle: true,
       ),
       body: state.isLoading && state.company == null
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF14003E)))
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF14003E)),
+            )
           : SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Form(
@@ -172,7 +196,10 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
                             Expanded(
                               child: Text(
                                 'Hồ sơ công ty của bạn đang chờ Admin phê duyệt. Bạn sẽ không thể cập nhật thông tin lúc này.',
-                                style: TextStyle(color: Colors.deepOrange, fontSize: 13),
+                                style: TextStyle(
+                                  color: Colors.deepOrange,
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
                           ],
@@ -188,32 +215,56 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
                               color: Colors.white,
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.grey.shade300),
-                              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 5))],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
                             ),
-                            child: const Icon(Icons.business, size: 50, color: Colors.grey),
+                            child: const Icon(
+                              Icons.business,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
                           ),
                           Positioned(
                             bottom: 0,
                             right: 0,
                             child: Container(
                               padding: const EdgeInsets.all(8),
-                              decoration: const BoxDecoration(color: Color(0xFFFDAE5C), shape: BoxShape.circle),
-                              child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFFDAE5C),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 16,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 32),
-                    
+
                     _buildLabel('Tên công ty *'),
-                    _buildTextField(_nameController, hint: 'Tên hiển thị trên tin tuyển dụng', isRequired: true),
+                    _buildTextField(
+                      _nameController,
+                      hint: 'Tên hiển thị trên tin tuyển dụng',
+                      isRequired: true,
+                    ),
                     const SizedBox(height: 16),
-                    
+
                     _buildLabel('Ngành nghề'),
-                    _buildTextField(_industryController, hint: 'IT, Marketing, v.v.'),
+                    _buildTextField(
+                      _industryController,
+                      hint: 'IT, Marketing, v.v.',
+                    ),
                     const SizedBox(height: 16),
-                    
+
                     Row(
                       children: [
                         Expanded(
@@ -221,7 +272,11 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildLabel('Quy mô (NV)'),
-                              _buildTextField(_employeeCountController, hint: '100', keyboardType: TextInputType.number),
+                              _buildTextField(
+                                _employeeCountController,
+                                hint: '100',
+                                keyboardType: TextInputType.number,
+                              ),
                             ],
                           ),
                         ),
@@ -235,7 +290,13 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
                                 onTap: _selectYear,
                                 child: AbsorbPointer(
                                   child: _buildTextField(
-                                    TextEditingController(text: _foundedYear != null ? DateTime.parse(_foundedYear!).year.toString() : ''),
+                                    TextEditingController(
+                                      text: _foundedYear != null
+                                          ? DateTime.parse(
+                                              _foundedYear!,
+                                            ).year.toString()
+                                          : '',
+                                    ),
                                     hint: 'YYYY',
                                     suffixIcon: Icons.calendar_today,
                                   ),
@@ -247,21 +308,33 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    
+
                     _buildLabel('Mã số thuế'),
-                    _buildTextField(_taxCodeController, hint: 'Nhập mã số thuế doanh nghiệp'),
+                    _buildTextField(
+                      _taxCodeController,
+                      hint: 'Nhập mã số thuế doanh nghiệp',
+                    ),
                     const SizedBox(height: 16),
-                    
+
                     _buildLabel('Website'),
-                    _buildTextField(_websiteController, hint: 'https://...', keyboardType: TextInputType.url),
+                    _buildTextField(
+                      _websiteController,
+                      hint: 'https://...',
+                      keyboardType: TextInputType.url,
+                    ),
                     const SizedBox(height: 16),
-                    
+
                     _buildLabel('Địa chỉ'),
                     _buildTextField(_addressController, hint: 'Địa chỉ trụ sở'),
                     const SizedBox(height: 16),
-                    
+
                     _buildLabel('Mô tả công ty'),
-                    _buildTextField(_descriptionController, hint: 'Giới thiệu ngắn gọn về văn hóa, môi trường làm việc...', maxLines: 4),
+                    _buildTextField(
+                      _descriptionController,
+                      hint:
+                          'Giới thiệu ngắn gọn về văn hóa, môi trường làm việc...',
+                      maxLines: 4,
+                    ),
                     const SizedBox(height: 32),
 
                     if (!state.isPendingApproval)
@@ -272,12 +345,29 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
                           onPressed: state.isLoading ? null : _save,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF14003E),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             elevation: 0,
                           ),
                           child: state.isLoading
-                              ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                              : const Text('LƯU THÔNG TIN', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+                              ? const SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text(
+                                  'LƯU THÔNG TIN',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
                         ),
                       ),
                     const SizedBox(height: 40),
@@ -291,17 +381,37 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
   Widget _buildLabel(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0, left: 4.0),
-      child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF14003E))),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 13,
+          color: Color(0xFF14003E),
+        ),
+      ),
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, {String? hint, IconData? suffixIcon, TextInputType? keyboardType, bool isRequired = false, int maxLines = 1}) {
+  Widget _buildTextField(
+    TextEditingController controller, {
+    String? hint,
+    IconData? suffixIcon,
+    TextInputType? keyboardType,
+    bool isRequired = false,
+    int maxLines = 1,
+  }) {
     final state = ref.watch(companyProvider);
     return Container(
       decoration: BoxDecoration(
         color: state.isPendingApproval ? Colors.grey.shade100 : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: TextFormField(
         controller: controller,
@@ -313,10 +423,18 @@ class _CompanyProfileScreenState extends ConsumerState<CompanyProfileScreen> {
           hintText: hint,
           hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: maxLines > 1 ? 16 : 15),
-          suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: Colors.grey, size: 20) : null,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: maxLines > 1 ? 16 : 15,
+          ),
+          suffixIcon: suffixIcon != null
+              ? Icon(suffixIcon, color: Colors.grey, size: 20)
+              : null,
         ),
-        validator: isRequired ? (val) => (val == null || val.isEmpty) ? 'Trường này bắt buộc' : null : null,
+        validator: isRequired
+            ? (val) =>
+                  (val == null || val.isEmpty) ? 'Trường này bắt buộc' : null
+            : null,
       ),
     );
   }

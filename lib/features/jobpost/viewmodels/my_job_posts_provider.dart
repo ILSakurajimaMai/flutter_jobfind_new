@@ -43,8 +43,7 @@ class MyJobPostsState {
 
   List<JobPostModel> get activeJobs =>
       jobs.where((j) => j.status == 1).toList();
-  List<JobPostModel> get draftJobs =>
-      jobs.where((j) => j.status == 0).toList();
+  List<JobPostModel> get draftJobs => jobs.where((j) => j.status == 0).toList();
   List<JobPostModel> get closedJobs =>
       jobs.where((j) => j.status == 2 || j.status == 3).toList();
 }
@@ -53,12 +52,14 @@ class MyJobPostsState {
 // Providers
 // ──────────────────────────────────────────────
 
-final jobPostServiceProvider = Provider<JobPostService>((ref) => JobPostService());
+final jobPostServiceProvider = Provider<JobPostService>(
+  (ref) => JobPostService(),
+);
 
 final myJobPostsProvider =
     NotifierProvider<MyJobPostsNotifier, MyJobPostsState>(
-  MyJobPostsNotifier.new,
-);
+      MyJobPostsNotifier.new,
+    );
 
 // ──────────────────────────────────────────────
 // Notifier (Riverpod 3.x – extends Notifier)
@@ -106,8 +107,9 @@ class MyJobPostsNotifier extends Notifier<MyJobPostsState> {
     state = state.copyWith(isSaving: true);
     try {
       final updated = await _service.updateJobPost(id, request);
-      final updatedList =
-          state.jobs.map((j) => j.id == id ? updated : j).toList();
+      final updatedList = state.jobs
+          .map((j) => j.id == id ? updated : j)
+          .toList();
       state = state.copyWith(
         isSaving: false,
         jobs: updatedList,
@@ -181,9 +183,7 @@ class MyJobPostsNotifier extends Notifier<MyJobPostsState> {
       );
       return true;
     } catch (e) {
-      state = state.copyWith(
-        error: e.toString().replaceAll('Exception: ', ''),
-      );
+      state = state.copyWith(error: e.toString().replaceAll('Exception: ', ''));
       return false;
     }
   }

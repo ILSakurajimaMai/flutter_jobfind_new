@@ -21,21 +21,21 @@ void main() {
   });
 
   group('AuthService - Login', () {
-    final loginDto = LoginDto(email: 'test@example.com', password: 'password123');
+    final loginDto = LoginDto(
+      email: 'test@example.com',
+      password: 'password123',
+    );
     final mockLoginResponse = {
       'accessToken': 'dummy_access_token',
       'refreshToken': 'dummy_refresh_token',
-      'user': {
-        'id': '1',
-        'email': 'test@example.com',
-        'role': 'user',
-      }
+      'user': {'id': '1', 'email': 'test@example.com', 'role': 'user'},
     };
 
     test('should return AuthResponseDto on successful login', () async {
       // Arrange: Giả lập ApiClient trả về dữ liệu thành công khi gọi post
-      when(() => mockApiClient.post('/auth/login', data: loginDto.toJson()))
-          .thenAnswer((_) async => mockLoginResponse);
+      when(
+        () => mockApiClient.post('/auth/login', data: loginDto.toJson()),
+      ).thenAnswer((_) async => mockLoginResponse);
 
       // Act: Gọi phương thức login
       final result = await authService.login(loginDto);
@@ -43,16 +43,19 @@ void main() {
       // Assert: Kiểm tra kết quả
       expect(result, isA<AuthResponseDto>());
       expect(result.accessToken, 'dummy_access_token');
-      expect(result.user.email, 'test@example.com');
-      
+      expect(result.email, 'test@example.com');
+
       // Xác minh ApiClient.post đã được gọi đúng 1 lần với đúng tham số
-      verify(() => mockApiClient.post('/auth/login', data: loginDto.toJson())).called(1);
+      verify(
+        () => mockApiClient.post('/auth/login', data: loginDto.toJson()),
+      ).called(1);
     });
 
     test('should throw ApiException on login failure', () async {
       // Arrange: Giả lập ApiClient ném lỗi ApiException
-      when(() => mockApiClient.post('/auth/login', data: loginDto.toJson()))
-          .thenThrow(ApiException('Sai email hoặc mật khẩu', 400));
+      when(
+        () => mockApiClient.post('/auth/login', data: loginDto.toJson()),
+      ).thenThrow(ApiException('Sai email hoặc mật khẩu', 400));
 
       // Act & Assert: Kiểm tra lỗi được ném ra
       expect(() => authService.login(loginDto), throwsA(isA<ApiException>()));

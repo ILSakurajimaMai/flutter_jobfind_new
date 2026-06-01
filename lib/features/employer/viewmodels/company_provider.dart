@@ -51,7 +51,11 @@ class CompanyNotifier extends Notifier<CompanyState> {
     try {
       final service = ref.read(companyServiceProvider);
       final company = await service.getMyCompany();
-      state = state.copyWith(isLoading: false, company: company, isPendingApproval: false);
+      state = state.copyWith(
+        isLoading: false,
+        company: company,
+        isPendingApproval: false,
+      );
     } catch (e) {
       // If company not found, check if there's a pending request
       try {
@@ -94,7 +98,8 @@ class CompanyNotifier extends Notifier<CompanyState> {
 
       // Chỉ update nếu đây là công ty đã được duyệt (isVerified = true)
       // Không dùng ID của pending request để gọi PUT
-      final isApprovedCompany = state.company?.id != null && state.company?.isVerified == true;
+      final isApprovedCompany =
+          state.company?.id != null && state.company?.isVerified == true;
 
       if (isApprovedCompany) {
         // Update công ty đã được duyệt

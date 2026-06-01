@@ -8,22 +8,15 @@ final profileServiceProvider = Provider((ref) => ProfileService());
 
 /// Trạng thái của màn hình Profile lưu trữ trạng thái load, thông báo lỗi và dữ liệu hồ sơ
 class ProfileState {
-  final bool isLoading; // Đánh dấu API đang chạy hay không để hiện vòng xoay quay quay
+  final bool
+  isLoading; // Đánh dấu API đang chạy hay không để hiện vòng xoay quay quay
   final String? error; // Lưu trữ lỗi nếu gọi API thất bại
   final ProfileDto? profile; // Lưu trữ đối tượng ProfileDto tải từ Backend
 
-  ProfileState({
-    this.isLoading = false,
-    this.error,
-    this.profile,
-  });
+  ProfileState({this.isLoading = false, this.error, this.profile});
 
   /// Hàm copyWith giúp tạo mới state bằng cách sao chép thuộc tính cũ và đè dữ liệu mới lên
-  ProfileState copyWith({
-    bool? isLoading,
-    String? error,
-    ProfileDto? profile,
-  }) {
+  ProfileState copyWith({bool? isLoading, String? error, ProfileDto? profile}) {
     return ProfileState(
       isLoading: isLoading ?? this.isLoading,
       error: error, // overwrite error nếu thay đổi rõ ràng
@@ -40,7 +33,9 @@ final profileProvider = NotifierProvider<ProfileNotifier, ProfileState>(() {
 class ProfileNotifier extends Notifier<ProfileState> {
   @override
   ProfileState build() {
-    ref.watch(authProvider); // Tự động reset state khi authProvider thay đổi (Logout/Login)
+    ref.watch(
+      authProvider,
+    ); // Tự động reset state khi authProvider thay đổi (Logout/Login)
     return ProfileState(); // Khởi tạo state gốc mặc định
   }
 

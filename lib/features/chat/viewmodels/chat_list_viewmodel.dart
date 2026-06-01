@@ -59,7 +59,12 @@ class ChatListViewModel extends Notifier<ChatListState> {
   }
 
   /// Cập nhật tin nhắn cuối cùng một cách mượt mà và chuyển đổi vị trí cuộc trò chuyện lên đầu danh sách
-  void updateLastMessage(int conversationId, String content, DateTime time, {bool incrementUnread = false}) {
+  void updateLastMessage(
+    int conversationId,
+    String content,
+    DateTime time, {
+    bool incrementUnread = false,
+  }) {
     final updatedList = state.conversations.map((c) {
       if (c.id == conversationId) {
         return ChatConversationDto(
@@ -89,7 +94,9 @@ class ChatListViewModel extends Notifier<ChatListState> {
 
     state = state.copyWith(
       conversations: updatedList,
-      totalUnreadCount: incrementUnread ? state.totalUnreadCount + 1 : state.totalUnreadCount,
+      totalUnreadCount: incrementUnread
+          ? state.totalUnreadCount + 1
+          : state.totalUnreadCount,
     );
   }
 
@@ -125,10 +132,14 @@ class ChatListViewModel extends Notifier<ChatListState> {
         }
         return c;
       }).toList(),
-      totalUnreadCount: state.totalUnreadCount - unreadSaved < 0 ? 0 : state.totalUnreadCount - unreadSaved,
+      totalUnreadCount: state.totalUnreadCount - unreadSaved < 0
+          ? 0
+          : state.totalUnreadCount - unreadSaved,
     );
   }
 }
 
 /// Provider toàn cục để lắng nghe sự thay đổi của ChatListViewModel
-final chatListProvider = NotifierProvider<ChatListViewModel, ChatListState>(ChatListViewModel.new);
+final chatListProvider = NotifierProvider<ChatListViewModel, ChatListState>(
+  ChatListViewModel.new,
+);

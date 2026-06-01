@@ -27,14 +27,19 @@ void main() {
 
   group('ProfileProvider Test Boilerplate', () {
     test('should initialize and load profile correctly', () async {
-      final mockProfile = ProfileDto(id: 1, email: 'test@example.com', firstName: 'A', lastName: 'B', role: 'USER', dateOfBirth: DateTime.now(), createdAt: DateTime.now());
-      
-      when(() => mockProfileService.getMyProfile())
-          .thenAnswer((_) async => mockProfile);
+      final mockProfile = ProfileDto(
+        id: 1,
+        email: 'test@example.com',
+        fullName: 'A B',
+      );
+
+      when(
+        () => mockProfileService.getMyProfile(),
+      ).thenAnswer((_) async => mockProfile);
 
       // Thêm logic test Provider của bạn tại đây
       // final profile = container.read(profileProvider);
-      
+
       expect(true, true); // Placeholder
     });
   });

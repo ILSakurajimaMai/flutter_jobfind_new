@@ -594,16 +594,16 @@ class JobDetailsScreen extends ConsumerWidget {
                     context: context,
                     barrierDismissible: false,
                     builder: (ctx) => const Center(
-                      child: CircularProgressIndicator(color: Color(0xFF14003E)),
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF14003E),
+                      ),
                     ),
                   );
 
                   try {
                     final chatService = ref.read(chatServiceProvider);
-                    final conversation = await chatService.getOrCreateConversation(
-                      job.employerId ?? 0,
-                      job.id,
-                    );
+                    final conversation = await chatService
+                        .getOrCreateConversation(job.employerId ?? 0, job.id);
 
                     if (context.mounted) Navigator.pop(context);
 

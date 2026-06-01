@@ -57,7 +57,9 @@ class ApiClient {
               );
 
               final responseData = refreshResponse.data;
-              final data = responseData is Map<String, dynamic> && responseData['success'] == true
+              final data =
+                  responseData is Map<String, dynamic> &&
+                      responseData['success'] == true
                   ? responseData['data']
                   : null;
 
@@ -74,10 +76,10 @@ class ApiClient {
 
               // Retry request ban đầu với token mới
               final originalRequest = error.requestOptions;
-              originalRequest.headers['Authorization'] = 'Bearer $newAccessToken';
+              originalRequest.headers['Authorization'] =
+                  'Bearer $newAccessToken';
               final retryResponse = await dio.fetch(originalRequest);
               return handler.resolve(retryResponse);
-
             } catch (_) {
               // Refresh thất bại → force logout
               final prefs = await SharedPreferences.getInstance();
@@ -112,7 +114,10 @@ class ApiClient {
       if (success == true) {
         return response.data['data'];
       } else {
-        throw ApiException(response.data['message'] ?? 'Lỗi không xác định từ máy chủ', response.statusCode);
+        throw ApiException(
+          response.data['message'] ?? 'Lỗi không xác định từ máy chủ',
+          response.statusCode,
+        );
       }
     }
     return response.data;
@@ -121,16 +126,26 @@ class ApiClient {
   /// Lỗi trả về từ DioException được convert thành ApiException
   ApiException _handleError(DioException e) {
     if (e.response != null && e.response?.data != null) {
-      if (e.response?.data is Map<String, dynamic> && e.response?.data['message'] != null) {
-        return ApiException(e.response?.data['message'], e.response?.statusCode);
+      if (e.response?.data is Map<String, dynamic> &&
+          e.response?.data['message'] != null) {
+        return ApiException(
+          e.response?.data['message'],
+          e.response?.statusCode,
+        );
       }
-      return ApiException('Đã xảy ra lỗi hệ thống: ${e.response?.statusCode}', e.response?.statusCode);
+      return ApiException(
+        'Đã xảy ra lỗi hệ thống: ${e.response?.statusCode}',
+        e.response?.statusCode,
+      );
     }
     return ApiException(e.message ?? 'Lỗi kết nối mạng');
   }
 
   /// GET
-  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       final response = await dio.get(path, queryParameters: queryParameters);
       return _handleResponse(response);
@@ -140,9 +155,17 @@ class ApiClient {
   }
 
   /// POST
-  Future<dynamic> post(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> post(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
-      final response = await dio.post(path, data: data, queryParameters: queryParameters);
+      final response = await dio.post(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
       return _handleResponse(response);
     } on DioException catch (e) {
       throw _handleError(e);
@@ -165,9 +188,17 @@ class ApiClient {
   }
 
   /// PUT
-  Future<dynamic> put(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> put(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
-      final response = await dio.put(path, data: data, queryParameters: queryParameters);
+      final response = await dio.put(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
       return _handleResponse(response);
     } on DioException catch (e) {
       throw _handleError(e);
@@ -175,9 +206,17 @@ class ApiClient {
   }
 
   /// PATCH
-  Future<dynamic> patch(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> patch(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
-      final response = await dio.patch(path, data: data, queryParameters: queryParameters);
+      final response = await dio.patch(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
       return _handleResponse(response);
     } on DioException catch (e) {
       throw _handleError(e);
@@ -185,9 +224,17 @@ class ApiClient {
   }
 
   /// DELETE
-  Future<dynamic> delete(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> delete(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
-      final response = await dio.delete(path, data: data, queryParameters: queryParameters);
+      final response = await dio.delete(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
       return _handleResponse(response);
     } on DioException catch (e) {
       throw _handleError(e);

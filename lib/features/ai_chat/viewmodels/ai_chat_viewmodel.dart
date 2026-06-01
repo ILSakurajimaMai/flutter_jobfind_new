@@ -38,7 +38,8 @@ class AIChatViewModel extends Notifier<AIChatState> {
     // Khởi tạo cuộc trò chuyện với tin nhắn chào mừng của AI
     final welcomeMessage = AIChatMessage(
       id: 'welcome',
-      text: 'Xin chào! Tôi là Trợ lý AI của JobFind. Tôi có thể hỗ trợ bạn tìm kiếm cơ hội và phát triển sự nghiệp.\n\nHãy thử hỏi tôi một số câu hỏi như:\n• Tìm công việc part-time ngành Thiết kế/IT\n• Tư vấn tối ưu CV gây ấn tượng với nhà tuyển dụng\n• Kỹ năng trả lời phỏng vấn xin việc',
+      text:
+          'Xin chào! Tôi là Trợ lý AI của JobFind. Tôi có thể hỗ trợ bạn tìm kiếm cơ hội và phát triển sự nghiệp.\n\nHãy thử hỏi tôi một số câu hỏi như:\n• Tìm công việc part-time ngành Thiết kế/IT\n• Tư vấn tối ưu CV gây ấn tượng với nhà tuyển dụng\n• Kỹ năng trả lời phỏng vấn xin việc',
       isFromUser: false,
       createdAt: DateTime.now(),
     );
@@ -81,7 +82,8 @@ class AIChatViewModel extends Notifier<AIChatState> {
     } catch (e) {
       final errorMessage = AIChatMessage(
         id: 'error_${DateTime.now().millisecondsSinceEpoch}',
-        text: 'Xin lỗi, tôi gặp sự cố kết nối tới máy chủ. Vui lòng kiểm tra lại mạng hoặc thử lại sau.',
+        text:
+            'Xin lỗi, tôi gặp sự cố kết nối tới máy chủ. Vui lòng kiểm tra lại mạng hoặc thử lại sau.',
         isFromUser: false,
         createdAt: DateTime.now(),
       );
@@ -102,7 +104,8 @@ class AIChatViewModel extends Notifier<AIChatState> {
 
       final welcomeMessage = AIChatMessage(
         id: 'welcome_${DateTime.now().millisecondsSinceEpoch}',
-        text: 'Phiên trò chuyện đã được làm mới! Tôi là Trợ lý AI của JobFind. Bạn cần tôi hỗ trợ việc làm hay tối ưu hồ sơ thế nào?',
+        text:
+            'Phiên trò chuyện đã được làm mới! Tôi là Trợ lý AI của JobFind. Bạn cần tôi hỗ trợ việc làm hay tối ưu hồ sơ thế nào?',
         isFromUser: false,
         createdAt: DateTime.now(),
       );
@@ -112,7 +115,8 @@ class AIChatViewModel extends Notifier<AIChatState> {
     } catch (e) {
       state = state.copyWith(
         isCleaning: false,
-        error: 'Không thể làm mới phiên trò chuyện: ${e.toString().replaceAll('Exception: ', '')}',
+        error:
+            'Không thể làm mới phiên trò chuyện: ${e.toString().replaceAll('Exception: ', '')}',
       );
       return false;
     }

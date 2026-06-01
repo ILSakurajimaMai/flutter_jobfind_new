@@ -81,18 +81,18 @@ class CvDto {
           : null,
       experiences: json['experiences'] != null
           ? (json['experiences'] as List)
-              .map((i) => CvExperienceDto.fromJson(i))
-              .toList()
+                .map((i) => CvExperienceDto.fromJson(i))
+                .toList()
           : null,
       educations: json['educations'] != null
           ? (json['educations'] as List)
-              .map((i) => CvEducationDto.fromJson(i))
-              .toList()
+                .map((i) => CvEducationDto.fromJson(i))
+                .toList()
           : null,
       certificates: json['certificates'] != null
           ? (json['certificates'] as List)
-              .map((i) => CvCertificateDto.fromJson(i))
-              .toList()
+                .map((i) => CvCertificateDto.fromJson(i))
+                .toList()
           : null,
     );
   }
@@ -115,15 +115,19 @@ class CvDto {
       if (major != null) 'major': major,
       if (gpa != null) 'gpa': gpa,
       if (yearOfStudy != null) 'yearOfStudy': yearOfStudy,
-      if (expectedGraduationDate != null) 'expectedGraduationDate': expectedGraduationDate,
+      if (expectedGraduationDate != null)
+        'expectedGraduationDate': expectedGraduationDate,
       if (resumeUrl != null) 'resumeUrl': resumeUrl,
       if (bio != null) 'bio': bio,
       if (linkedInUrl != null) 'linkedInUrl': linkedInUrl,
       if (gitHubUrl != null) 'gitHubUrl': gitHubUrl,
       if (skills != null) 'skills': skills!.map((i) => i.toJson()).toList(),
-      if (experiences != null) 'experiences': experiences!.map((i) => i.toJson()).toList(),
-      if (educations != null) 'educations': educations!.map((i) => i.toJson()).toList(),
-      if (certificates != null) 'certificates': certificates!.map((i) => i.toJson()).toList(),
+      if (experiences != null)
+        'experiences': experiences!.map((i) => i.toJson()).toList(),
+      if (educations != null)
+        'educations': educations!.map((i) => i.toJson()).toList(),
+      if (certificates != null)
+        'certificates': certificates!.map((i) => i.toJson()).toList(),
     };
   }
 }
@@ -290,7 +294,8 @@ class CvCertificateDto {
     return {
       if (id != null) 'id': id,
       'name': name,
-      if (issuingOrganization != null) 'issuingOrganization': issuingOrganization,
+      if (issuingOrganization != null)
+        'issuingOrganization': issuingOrganization,
       if (issueDate != null) 'issueDate': issueDate,
       if (expiryDate != null) 'expiryDate': expiryDate,
       if (credentialId != null) 'credentialId': credentialId,

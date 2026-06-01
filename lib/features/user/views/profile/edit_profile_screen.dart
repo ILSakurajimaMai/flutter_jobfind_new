@@ -51,7 +51,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       if (p.dateOfBirth != null) {
         _selectedDate = DateTime.tryParse(p.dateOfBirth!);
         if (_selectedDate != null) {
-          _dobController.text = DateFormat('dd MMMM yyyy').format(_selectedDate!);
+          _dobController.text = DateFormat(
+            'dd MMMM yyyy',
+          ).format(_selectedDate!);
         }
       }
     } else if (authState.user != null) {
@@ -131,8 +133,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<ProfileState>(profileProvider, (prev, next) {
-      if (prev?.isLoading == true &&
-          next.isLoading == false) {
+      if (prev?.isLoading == true && next.isLoading == false) {
         _populateData();
       }
     });
@@ -197,7 +198,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 ),
                               ],
                             ),
-
                           ],
                         ),
                         const SizedBox(height: 16),

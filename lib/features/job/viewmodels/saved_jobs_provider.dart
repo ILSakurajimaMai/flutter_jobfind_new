@@ -5,7 +5,9 @@ import 'package:app_jobfind/features/auth/viewmodels/auth_provider.dart';
 class SavedJobsNotifier extends Notifier<List<JobPostDto>> {
   @override
   List<JobPostDto> build() {
-    ref.watch(authProvider); // Tự động reset state khi authProvider thay đổi (Logout/Login)
+    ref.watch(
+      authProvider,
+    ); // Tự động reset state khi authProvider thay đổi (Logout/Login)
     return [];
   }
 
@@ -22,4 +24,6 @@ class SavedJobsNotifier extends Notifier<List<JobPostDto>> {
   }
 }
 
-final savedJobsProvider = NotifierProvider<SavedJobsNotifier, List<JobPostDto>>(SavedJobsNotifier.new);
+final savedJobsProvider = NotifierProvider<SavedJobsNotifier, List<JobPostDto>>(
+  SavedJobsNotifier.new,
+);

@@ -17,15 +17,13 @@ void main() {
   setUp(() {
     // 1. Giả lập SharedPreferences rỗng ban đầu để AuthNotifier không bị lỗi khi khởi tạo
     SharedPreferences.setMockInitialValues({});
-    
+
     // 2. Giả lập Service
     mockAuthService = MockAuthService();
 
     // 3. Khởi tạo ProviderContainer và ghi đè (override) authServiceProvider
     container = ProviderContainer(
-      overrides: [
-        authServiceProvider.overrideWithValue(mockAuthService),
-      ],
+      overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
     );
   });
 
@@ -34,7 +32,10 @@ void main() {
   });
 
   group('AuthNotifier - Login', () {
-    final loginDto = LoginDto(email: 'test@example.com', password: 'password123');
+    final loginDto = LoginDto(
+      email: 'test@example.com',
+      password: 'password123',
+    );
     final mockResponse = AuthResponseDto(
       userId: 1,
       email: 'test@example.com',
@@ -47,7 +48,9 @@ void main() {
 
     test('login success should update state to authenticated', () async {
       // Arrange
-      when(() => mockAuthService.login(any())).thenAnswer((_) async => mockResponse);
+      when(
+        () => mockAuthService.login(any()),
+      ).thenAnswer((_) async => mockResponse);
 
       // Lấy notifier
       final notifier = container.read(authProvider.notifier);
@@ -58,10 +61,10 @@ void main() {
 
       // Assert
       expect(success, true);
-      
+
       // Đọc state cuối cùng
       final state = container.read(authProvider);
-      
+
       expect(state.isLoading, false);
       expect(state.isAuthenticated, true);
       expect(state.user?.email, 'test@example.com');
@@ -70,8 +73,9 @@ void main() {
 
     test('login failure should update state with error message', () async {
       // Arrange
-      when(() => mockAuthService.login(any()))
-          .thenThrow(ApiException('Sai mật khẩu', 400));
+      when(
+        () => mockAuthService.login(any()),
+      ).thenThrow(ApiException('Sai mật khẩu', 400));
 
       final notifier = container.read(authProvider.notifier);
 
@@ -80,7 +84,7 @@ void main() {
 
       // Assert
       expect(success, false);
-      
+
       final state = container.read(authProvider);
       expect(state.isLoading, false);
       expect(state.isAuthenticated, false);

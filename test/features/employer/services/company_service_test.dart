@@ -24,8 +24,9 @@ void main() {
     };
 
     test('getMyCompany returns CompanyDto on success', () async {
-      when(() => mockApiClient.get('/companies/me'))
-          .thenAnswer((_) async => mockResponse);
+      when(
+        () => mockApiClient.get('/companies/me'),
+      ).thenAnswer((_) async => mockResponse);
 
       final result = await companyService.getMyCompany();
 
@@ -34,8 +35,9 @@ void main() {
     });
 
     test('getMyCompany throws ApiException on failure', () async {
-      when(() => mockApiClient.get('/companies/me'))
-          .thenThrow(ApiException('Lỗi server', 500));
+      when(
+        () => mockApiClient.get('/companies/me'),
+      ).thenThrow(ApiException('Lỗi server', 500));
 
       expect(() => companyService.getMyCompany(), throwsA(isA<ApiException>()));
     });

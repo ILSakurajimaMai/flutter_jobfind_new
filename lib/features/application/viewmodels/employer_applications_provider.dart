@@ -5,15 +5,20 @@ import 'package:app_jobfind/features/application/models/application_dto.dart';
 import 'package:app_jobfind/features/application/viewmodels/application_provider.dart';
 import 'package:app_jobfind/features/auth/viewmodels/auth_provider.dart';
 
-final employerApplicationsProvider = AsyncNotifierProvider<EmployerApplicationsNotifier, List<ApplicationDto>>(() {
-  return EmployerApplicationsNotifier();
-});
+final employerApplicationsProvider =
+    AsyncNotifierProvider<EmployerApplicationsNotifier, List<ApplicationDto>>(
+      () {
+        return EmployerApplicationsNotifier();
+      },
+    );
 
 class EmployerApplicationsNotifier extends AsyncNotifier<List<ApplicationDto>> {
   @override
   Future<List<ApplicationDto>> build() async {
-    ref.watch(authProvider); // Tự động reset state khi auth thay đổi (đăng nhập/đăng xuất)
-    
+    ref.watch(
+      authProvider,
+    ); // Tự động reset state khi auth thay đổi (đăng nhập/đăng xuất)
+
     final authState = ref.read(authProvider);
     if (!authState.isAuthenticated || authState.user == null) return [];
 
@@ -43,8 +48,12 @@ class EmployerApplicationsNotifier extends AsyncNotifier<List<ApplicationDto>> {
   Future<void> updateStatus(int id, int statusId, {String? notes}) async {
     try {
       final service = ref.read(applicationServiceProvider);
-      await service.updateApplicationStatus(id, statusId: statusId, notes: notes);
-      
+      await service.updateApplicationStatus(
+        id,
+        statusId: statusId,
+        notes: notes,
+      );
+
       if (state.hasValue) {
         String statusName;
         switch (statusId) {

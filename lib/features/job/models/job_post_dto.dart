@@ -76,14 +76,22 @@ class JobPostDto {
       workType: json['workType'],
       category: json['category'],
       numberOfPositions: json['numberOfPositions'],
-      applicationDeadline: json['applicationDeadline'] != null ? DateTime.tryParse(json['applicationDeadline']) : null,
+      applicationDeadline: json['applicationDeadline'] != null
+          ? DateTime.tryParse(json['applicationDeadline'])
+          : null,
       status: json['status'] ?? 0,
       viewCount: json['viewCount'] ?? 0,
       applicationCount: json['applicationCount'] ?? 0,
       isFeatured: json['isFeatured'] ?? false,
       isUrgent: json['isUrgent'] ?? false,
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
-      requiredSkills: (json['requiredSkills'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : DateTime.now(),
+      requiredSkills:
+          (json['requiredSkills'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 }

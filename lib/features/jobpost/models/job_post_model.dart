@@ -85,7 +85,8 @@ class JobPostModel {
       updatedAt: json['updatedAt'] != null
           ? DateTime.tryParse(json['updatedAt'])
           : null,
-      requiredSkills: (json['requiredSkills'] as List<dynamic>?)
+      requiredSkills:
+          (json['requiredSkills'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],

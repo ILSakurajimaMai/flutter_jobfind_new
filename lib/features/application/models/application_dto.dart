@@ -52,8 +52,12 @@ class ApplicationDto {
       statusName: json['statusName'] ?? '',
       coverLetter: json['coverLetter'],
       resumeUrl: json['resumeUrl'],
-      appliedAt: json['appliedAt'] != null ? DateTime.parse(json['appliedAt']) : DateTime.now(),
-      reviewedAt: json['reviewedAt'] != null ? DateTime.parse(json['reviewedAt']) : null,
+      appliedAt: json['appliedAt'] != null
+          ? DateTime.parse(json['appliedAt'])
+          : DateTime.now(),
+      reviewedAt: json['reviewedAt'] != null
+          ? DateTime.parse(json['reviewedAt'])
+          : null,
       reviewNotes: json['reviewNotes'],
     );
   }
