@@ -18,7 +18,14 @@ void main() {
 
   group('ChatService', () {
     final mockResponse = [
-      {'id': 1, 'employerId': 1, 'employerName': 'A', 'studentId': 2, 'studentName': 'B', 'unreadCount': 0},
+      {
+        'id': 1,
+        'employerId': 1,
+        'employerName': 'A',
+        'studentId': 2,
+        'studentName': 'B',
+        'unreadCount': 0,
+      },
     ];
 
     test(
@@ -34,7 +41,12 @@ void main() {
         final result = await chatService.getConversations();
 
         expect(result, isA<List<ChatConversationDto>>());
-        verify(() => mockApiClient.get('/chat/conversations', queryParameters: {'pageNumber': 1, 'pageSize': 20})).called(1);
+        verify(
+          () => mockApiClient.get(
+            '/chat/conversations',
+            queryParameters: {'pageNumber': 1, 'pageSize': 20},
+          ),
+        ).called(1);
       },
     );
 
