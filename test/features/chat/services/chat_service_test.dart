@@ -18,26 +18,32 @@ void main() {
 
   group('ChatService', () {
     final mockResponse = [
-      {'id': '1', 'participants': [], 'messages': []},
+      {'id': 1, 'employerId': 1, 'employerName': 'A', 'studentId': 2, 'studentName': 'B', 'unreadCount': 0},
     ];
 
     test(
       'getMyConversations returns List<ChatConversationDto> on success',
       () async {
         when(
-          () => mockApiClient.get('/chats/conversations'),
+          () => mockApiClient.get(
+            '/chat/conversations',
+            queryParameters: {'pageNumber': 1, 'pageSize': 20},
+          ),
         ).thenAnswer((_) async => mockResponse);
 
         final result = await chatService.getConversations();
 
         expect(result, isA<List<ChatConversationDto>>());
-        verify(() => mockApiClient.get('/chats/conversations')).called(1);
+        verify(() => mockApiClient.get('/chat/conversations', queryParameters: {'pageNumber': 1, 'pageSize': 20})).called(1);
       },
     );
 
     test('getMyConversations throws ApiException on failure', () async {
       when(
-        () => mockApiClient.get('/chats/conversations'),
+        () => mockApiClient.get(
+          '/chat/conversations',
+          queryParameters: {'pageNumber': 1, 'pageSize': 20},
+        ),
       ).thenThrow(ApiException('Error', 500));
 
       expect(

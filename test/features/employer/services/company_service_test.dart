@@ -18,7 +18,7 @@ void main() {
 
   group('CompanyService', () {
     final mockResponse = {
-      'id': '1',
+      'id': 1,
       'name': 'Tech Corp',
       'description': 'A great company',
     };

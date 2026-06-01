@@ -28,7 +28,9 @@ void main() {
     final mockLoginResponse = {
       'accessToken': 'dummy_access_token',
       'refreshToken': 'dummy_refresh_token',
-      'user': {'id': '1', 'email': 'test@example.com', 'role': 'user'},
+      'userId': 1,
+      'email': 'test@example.com',
+      'roles': ['USER'],
     };
 
     test('should return AuthResponseDto on successful login', () async {

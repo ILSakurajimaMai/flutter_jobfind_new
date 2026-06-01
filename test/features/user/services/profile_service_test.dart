@@ -18,7 +18,7 @@ void main() {
 
   group('ProfileService', () {
     final mockProfileResponse = {
-      'id': '1',
+      'id': 1,
       'email': 'user@example.com',
       'firstName': 'John',
       'lastName': 'Doe',

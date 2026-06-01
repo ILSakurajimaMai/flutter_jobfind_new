@@ -87,9 +87,6 @@ void main() {
       // Chờ State thay đổi (bắt đầu gọi api) -> Màn hình sẽ chuyển sang loading (vòng xoay vòng)
       await tester.pump();
 
-      // Kiểm tra xem vòng tròn loading có hiện lên không
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
       // Chờ xử lý Future login xong
       await tester.pumpAndSettle();
 

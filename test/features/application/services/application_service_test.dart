@@ -20,7 +20,7 @@ void main() {
   group('ApplicationService', () {
     final mockResponse = {
       'items': [
-        {'id': '1', 'status': 'Pending'},
+        {'id': 1, 'status': 'Pending'},
       ],
       'pageNumber': 1,
       'totalPages': 1,

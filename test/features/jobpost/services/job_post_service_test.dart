@@ -18,24 +18,24 @@ void main() {
 
   group('JobPostService', () {
     final mockResponse = [
-      {'id': '1', 'title': 'Flutter Developer'},
+      {'id': 1, 'title': 'Flutter Developer'},
     ];
 
     test('getMyJobPosts returns List<JobPostModel> on success', () async {
       when(
-        () => mockApiClient.get('/job-posts/my-posts'),
+        () => mockApiClient.get('/jobposts/my'),
       ).thenAnswer((_) async => mockResponse);
 
       final result = await jobPostService.getMyJobPosts();
 
       expect(result, isA<List<JobPostModel>>());
       expect(result.length, 1);
-      verify(() => mockApiClient.get('/job-posts/my-posts')).called(1);
+      verify(() => mockApiClient.get('/jobposts/my')).called(1);
     });
 
     test('getMyJobPosts throws ApiException on failure', () async {
       when(
-        () => mockApiClient.get('/job-posts/my-posts'),
+        () => mockApiClient.get('/jobposts/my'),
       ).thenThrow(ApiException('Unauthorized', 401));
 
       expect(

@@ -14,6 +14,10 @@ void main() {
   late ProviderContainer container;
   late MockAuthService mockAuthService;
 
+  setUpAll(() {
+    registerFallbackValue(LoginDto(email: '', password: ''));
+  });
+
   setUp(() {
     // 1. Giả lập SharedPreferences rỗng ban đầu để AuthNotifier không bị lỗi khi khởi tạo
     SharedPreferences.setMockInitialValues({});

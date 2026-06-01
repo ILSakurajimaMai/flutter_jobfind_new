@@ -20,7 +20,7 @@ void main() {
   group('JobService', () {
     final mockResponse = {
       'items': [
-        {'id': '1', 'title': 'Developer'},
+        {'id': 1, 'title': 'Developer'},
       ],
       'pageNumber': 1,
       'totalPages': 1,
@@ -32,8 +32,8 @@ void main() {
     test('getAllJobs returns PaginatedListDto on success', () async {
       when(
         () => mockApiClient.get(
-          '/jobs',
-          queryParameters: {'page': 1, 'pageSize': 50},
+          '/jobposts',
+          queryParameters: {'pageNumber': 1, 'pageSize': 50},
         ),
       ).thenAnswer((_) async => mockResponse);
 
@@ -42,8 +42,8 @@ void main() {
       expect(result, isA<PaginatedListDto<JobPostDto>>());
       verify(
         () => mockApiClient.get(
-          '/jobs',
-          queryParameters: {'page': 1, 'pageSize': 50},
+          '/jobposts',
+          queryParameters: {'pageNumber': 1, 'pageSize': 50},
         ),
       ).called(1);
     });
@@ -51,8 +51,8 @@ void main() {
     test('getAllJobs throws ApiException on failure', () async {
       when(
         () => mockApiClient.get(
-          '/jobs',
-          queryParameters: {'page': 1, 'pageSize': 50},
+          '/jobposts',
+          queryParameters: {'pageNumber': 1, 'pageSize': 50},
         ),
       ).thenThrow(ApiException('Lỗi không xác định', 500));
 
