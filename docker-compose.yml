@@ -1,0 +1,8 @@
+services:
+  jobfind-web:
+    image: jobfind-web:latest
+    ports:
+      - "80:80"
+    environment:
+      BASE_URL: "https://api.domain_của_tôi.com"
+    restart: unless-stopped
