@@ -5,7 +5,8 @@ import 'package:dio/dio.dart' as dio;
 
 /// Lớp Service chịu trách nhiệm giao tiếp trực tiếp với Backend API liên quan đến CV.
 class CvService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _apiClient;
+  CvService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   /// Lấy danh sách tất cả CV của user hiện tại
   Future<List<CvDto>> getMyCvs() async {

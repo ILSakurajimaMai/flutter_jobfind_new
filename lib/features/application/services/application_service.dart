@@ -6,7 +6,8 @@ import 'package:app_jobfind/features/application/models/application_dto.dart';
 import 'package:app_jobfind/features/application/models/create_application_dto.dart';
 
 class ApplicationService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _apiClient;
+  ApplicationService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   /// Lấy danh sách các đơn ứng tuyển của tôi
   Future<PaginatedListDto<ApplicationDto>> getMyApplications({int pageNumber = 1, int pageSize = 50}) async {

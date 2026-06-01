@@ -4,7 +4,8 @@ import 'package:app_jobfind/features/job/models/job_post_dto.dart';
 import 'package:app_jobfind/features/job/models/company_dto.dart';
 
 class JobService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _apiClient;
+  JobService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   Future<PaginatedListDto<JobPostDto>> getAllJobs({int page = 1, int pageSize = 50}) async {
     final data = await _apiClient.get(

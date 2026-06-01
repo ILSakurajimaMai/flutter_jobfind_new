@@ -4,7 +4,8 @@ import 'package:app_jobfind/features/chat/models/chat_message_dto.dart';
 import 'package:app_jobfind/features/chat/models/send_message_dto.dart';
 
 class ChatService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _apiClient;
+  ChatService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   // ── REST API Methods ──
 

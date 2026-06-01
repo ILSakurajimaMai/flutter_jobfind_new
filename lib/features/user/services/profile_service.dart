@@ -3,8 +3,8 @@ import 'package:app_jobfind/features/user/models/profile_dto.dart';
 
 /// Lớp Service chịu trách nhiệm giao tiếp trực tiếp với Backend API liên quan đến Profile.
 class ProfileService {
-  final ApiClient _apiClient =
-      ApiClient(); // Khởi tạo ApiClient chứa sẵn Cấu hình Token
+  final ApiClient _apiClient;
+  ProfileService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   /// Hàm gọi lệnh lấy thông tin hồ sơ của chính người dùng đang đăng nhập
   Future<ProfileDto> getMyProfile() async {

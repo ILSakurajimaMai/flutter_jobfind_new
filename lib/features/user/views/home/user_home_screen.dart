@@ -7,7 +7,6 @@ import 'package:app_jobfind/features/job/views/widgets/job_card.dart';
 import 'package:app_jobfind/features/job/viewmodels/saved_jobs_provider.dart';
 import 'package:app_jobfind/features/cv/views/my_cv_screen.dart';
 import 'package:app_jobfind/features/chat/views/chat_list_screen.dart';
-import 'package:app_jobfind/features/ai_chat/views/ai_chat_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 /// Màn hình Trang chủ Người Dùng (User Home Screen)
@@ -44,7 +43,7 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
         index: _currentIndex,
         children: [
           _buildHomeTab(context),
-          const AIChatScreen(),
+          const Center(child: Text('Network')),
           const ChatListScreen(),
           const MainProfileScreen(), // Index 3 is Profile
         ],
@@ -68,7 +67,7 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildNavItem(Icons.home_outlined, 0),
-            _buildNavItem(Icons.smart_toy_outlined, 1),
+            _buildNavItem(Icons.group_work_outlined, 1),
             const SizedBox(width: 40), // Space for FAB
             _buildNavItem(Icons.chat_bubble_outline, 2),
             _buildNavItem(Icons.person_outline, 3),

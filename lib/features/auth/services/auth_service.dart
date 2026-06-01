@@ -8,7 +8,9 @@ import 'package:app_jobfind/features/auth/models/change_password_dto.dart';
 /// Lớp [AuthService] quản lý các API liên quan đến tài khoản người dùng.
 class AuthService {
   /// Đối tượng gọi API có cấu hình sẵn tự động gắn JWT Token.
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _apiClient;
+
+  AuthService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   /// Đăng nhập hệ thống qua `/auth/login`.
   /// - Gửi Email, Password từ [LoginScreen]

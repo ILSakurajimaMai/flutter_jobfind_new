@@ -6,7 +6,8 @@ import 'package:app_jobfind/features/jobpost/models/job_post_model.dart';
 import 'package:app_jobfind/features/jobpost/models/create_job_post_request.dart';
 
 class JobPostService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _apiClient;
+  JobPostService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   /// Lấy danh sách tin tuyển dụng của Employer đang đăng nhập
   Future<List<JobPostModel>> getMyJobPosts() async {
