@@ -1,0 +1,89 @@
+name: Build and Push Flutter Docker Image
+
+on: 
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  flutter-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - run: chmod +x android/gradlew
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.41.6
+
+      - name: Install dependencies
+        run: flutter pub get
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            ~/.gradle/caches
+            build/app/outputs/flutter-apk
+          key: ${{ runner.os }}-flutter
+
+      - name: Build APK (split per ABI)
+        run: flutter build apk --split-per-abi --release
+        
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: jobfind-apk
+          path: build/app/outputs/flutter-apk/app-*-release.apk
+
+  build-and-push:
+    needs: flutter-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase the repo owner name
+        run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ env.REPO_OWNER }}/jobfind-web:latest
+            ghcr.io/${{ env.REPO_OWNER }}/jobfind-web:${{ github.sha }}
+
+    # 1. Connect Tailscale
+      # - name: Connect Tailscale
+      #   uses: tailscale/github-action@v2
+      #   with:
+      #     authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      # - name: SSH server and pull docker image
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with: 
+      #     host: ${{ secrets.SERVER_HOST }}
+      #     username: ${{ secrets.SERVER_USERNAME }}
+      #     key: ${{ secrets.SERVER_KEY }}
+      #     script: |
+
+      #       cd /home/hieu/Flutter_web_Jobfind
+
+      #       docker compose pull
+
+      #       docker compose up -d
+
+      #       docker image prune -f
